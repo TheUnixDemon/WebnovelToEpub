@@ -1,8 +1,9 @@
 import re
 from pathlib import Path
+from typing import List
 
 
-def createChapterURLs():
+def createChapterURLs() -> None:
     uncleared_url = input("html adress of a chapter: ")
     url = re.sub(r"_.*\.html", "_", uncleared_url)  # finds out the right base url
 
@@ -27,8 +28,8 @@ def createChapterURLs():
     my_save.close()
 
 
-def returnChapterURLs():  # returns all URLs as list
-    chapterURLs = []
+def returnChapterURLs() -> List[str]:  # returns all URLs as list
+    chapterURLs: List[str] = []
     my_save = open("indexURL.txt", "r")
     lines = my_save.read().splitlines()
 

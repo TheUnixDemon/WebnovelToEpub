@@ -1,11 +1,12 @@
 import time
+from typing import Union
 
 import getHeaders
 import requests
 import userInteractions
 
 
-def makeRequest(URL, session):  # will executed each url entry
+def makeRequest(URL: str, session: requests.Session) -> Union[requests.Response, bool, None]:  # will executed each url entry
     time.sleep(1)  # for lesser suspect behavoir
     try:
         header = getHeaders.getHeader()  # set basic header

@@ -1,5 +1,7 @@
-# for a more browser like appearance(can hide bot attibutes)
-def getHeader():
+from typing import Dict
+
+
+def getHeader() -> Dict[str, str]:  # for a more browser like appearance(can hide bot attibutes)
     header = {
         'Accept': '*/*',
         'Accept-Encoding': 'identity',

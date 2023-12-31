@@ -6,7 +6,7 @@ import userInteractions
 userInteractions.printStart()
 
 
-def checkBooks():
+def checkBooks() -> str:
     while True:
         bookTitle = input("Please enter the book filename: ")
         check = booksave.checkBook(bookTitle)

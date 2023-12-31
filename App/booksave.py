@@ -1,11 +1,12 @@
 import os
 from pathlib import Path
+from typing import List
 
 import userInteractions
 
 
-def checkBook(bookTitle):  # check if a book with the same name exists
-    filename = str(bookTitle) + ".html"
+def checkBook(bookTitle: str) -> bool:  # check if a book with the same name exists
+    filename = bookTitle + ".html"
     fullPath = os.path.join("../Books/HTML", filename)
 
     if os.path.exists(fullPath):
@@ -20,7 +21,7 @@ def checkBook(bookTitle):  # check if a book with the same name exists
         return True
 
 
-def writeBook(bookTitle, chapterTitle, chapterContent):  # saves it as a .txt/markdown | append one chapter
+def writeBook(bookTitle: str, chapterTitle: str, chapterContent: List[str]) -> None:  # saves it as a .txt/markdown | append one chapter
     # sets the variables once more for a better understanding of the meanings
     filename = str(bookTitle) + ".html"
     phrases = chapterContent

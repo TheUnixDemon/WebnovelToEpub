@@ -10,7 +10,7 @@ import requests
 import userInteractions
 
 
-def makeBook(bookTitle):
+def makeBook(bookTitle: str) -> None:
     session = requests.session()  # set session for entire connection
     chapterURLs = bookmeta.returnChapterURLs()  # get all URLs within indexURL
     for i in range(0, len(chapterURLs)):  # one loop = one chapter

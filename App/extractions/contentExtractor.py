@@ -1,14 +1,16 @@
 import html
 import re
+from typing import List
 
+import requests
 from bs4 import BeautifulSoup
 
 
-def extractChapterContent(page):  # returns content as a list
+def extractChapterContent(page: requests.Response) -> List[str]:  # returns content as a list
     soup = BeautifulSoup(page.content, "html.parser")
     contentChapter = soup.find_all("p")
 
-    flippedContent = []  # saved content in reversed order
+    flippedContent: List[str] = []  # saved content in reversed order
 
     # must be splitted in reverse, because of the nesting of the <p> tags
     for i in range(len(contentChapter) - 1, -1, -1):  # one run is one reversed <p> tag

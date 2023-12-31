@@ -1,16 +1,16 @@
-def printStart():
+def printStart() -> None:
     print("")
     print("---- START ----")
     print("")
 
 
-def printEnd():
+def printEnd() -> None:
     print("")
     print("---- DONE ----")
     print("")
 
 
-def printNameError():  # if a book with same name exists
+def printNameError() -> bool:  # if a book with same name exists
     print("")
     print("---- THE BOOK EXISTS ALREADY ----")
     choice = input("Do you want to override the old book? (yes/no): ")
@@ -23,7 +23,7 @@ def printNameError():  # if a book with same name exists
         return False
 
 
-def printRequestError(URL, e):
+def printRequestError(URL: str, e: Exception) -> None:
     print("")
     print("<<<< ERROR >>>>")
     print("")
@@ -33,7 +33,7 @@ def printRequestError(URL, e):
     print("")
 
 
-def printTimeout():
+def printTimeout() -> None:
     print("")
     print("---- TIMEOUT ----")
     print("")
@@ -41,12 +41,12 @@ def printTimeout():
     print("")
 
 
-def printSkip():
+def printSkip() -> None:
     print("")
     print("---- URL SKIPPED ----")
     print("")
 
 
-def printProgress(chapterURLs, currentURL):
+def printProgress(chapterURLs, currentURL) -> None:
     percent = ((currentURL + 1) / len(chapterURLs)) * 100
     print("Progress: " + str(percent) + " %")
