@@ -1,14 +1,13 @@
 import sys
-sys.path.append('requests')
+import time
 
-import handleRequest
-import handleExtractions
-import userInteractions
 import bookmeta
 import booksave
-
+import handleExtractions
+import handleRequest
+sys.path.append('requests')
 import requests
-import time
+import userInteractions
 
 
 def makeBook(bookTitle):

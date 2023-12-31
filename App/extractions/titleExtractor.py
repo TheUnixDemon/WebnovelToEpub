@@ -1,6 +1,7 @@
-from bs4 import BeautifulSoup
 import html
 import re
+
+from bs4 import BeautifulSoup
 
 
 def extractTitleEntry(page):  # get correct title entry(uncleared)

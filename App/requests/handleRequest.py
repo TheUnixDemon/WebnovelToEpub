@@ -1,8 +1,8 @@
-import getHeaders
-import userInteractions
-
-import requests
 import time
+
+import getHeaders
+import requests
+import userInteractions
 
 
 def makeRequest(URL, session):  # will executed each url entry

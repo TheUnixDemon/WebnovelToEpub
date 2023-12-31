@@ -1,6 +1,7 @@
-from bs4 import BeautifulSoup
 import html
 import re
+
+from bs4 import BeautifulSoup
 
 
 def extractChapterContent(page):  # returns content as a list

@@ -1,7 +1,7 @@
-import userInteractions
-
 import os
 from pathlib import Path
+
+import userInteractions
 
 
 def checkBook(bookTitle):  # check if a book with the same name exists
