@@ -1,6 +1,7 @@
 from pathlib import Path
 import re
 
+
 def createChapterURLs():
     uncleared_url = input("html adress of a chapter: ")
     url = re.sub(r"_.*\.html", "_", uncleared_url)  # finds out the right base url
@@ -24,6 +25,7 @@ def createChapterURLs():
         my_save.write(line + "\n")
 
     my_save.close()
+
 
 def returnChapterURLs():  # returns all URLs as list
     chapterURLs = []

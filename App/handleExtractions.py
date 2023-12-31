@@ -4,6 +4,7 @@ sys.path.append('extractions')
 import titleExtractor
 import contentExtractor
 
+
 def makeExtractions(page):
     # extract title
     titleEntry = titleExtractor.extractTitleEntry(page)  # get correct title entry(uncleared)

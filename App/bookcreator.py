@@ -10,6 +10,7 @@ import booksave
 import requests
 import time
 
+
 def makeBook(bookTitle):
     session = requests.session()  # set session for entire connection
     chapterURLs = bookmeta.returnChapterURLs()  # get all URLs within indexURL

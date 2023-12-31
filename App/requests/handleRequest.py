@@ -4,6 +4,7 @@ import userInteractions
 import requests
 import time
 
+
 def makeRequest(URL, session):  # will executed each url entry
     time.sleep(1)  # for lesser suspect behavoir
     try:

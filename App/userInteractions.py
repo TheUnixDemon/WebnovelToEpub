@@ -3,10 +3,12 @@ def printStart():
     print("---- START ----")
     print("")
 
+
 def printEnd():
     print("")
     print("---- DONE ----")
     print("")
+
 
 def printNameError():  # if a book with same name exists
     print("")
@@ -20,6 +22,7 @@ def printNameError():  # if a book with same name exists
     else:
         return False
 
+
 def printRequestError(URL, e):
     print("")
     print("<<<< ERROR >>>>")
@@ -29,6 +32,7 @@ def printRequestError(URL, e):
     print("<<<< ERROR >>>>")
     print("")
 
+
 def printTimeout():
     print("")
     print("---- TIMEOUT ----")
@@ -36,10 +40,12 @@ def printTimeout():
     print("Program will wait for 45 secounds.")
     print("")
 
+
 def printSkip():
     print("")
     print("---- URL SKIPPED ----")
     print("")
+
 
 def printProgress(chapterURLs, currentURL):
     percent = ((currentURL + 1) / len(chapterURLs)) * 100

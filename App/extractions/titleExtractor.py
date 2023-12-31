@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import html
 import re
 
+
 def extractTitleEntry(page):  # get correct title entry(uncleared)
     soup = BeautifulSoup(page.content, "html.parser")
     row_title = soup.find_all("meta")
@@ -16,6 +17,7 @@ def extractTitleEntry(page):  # get correct title entry(uncleared)
 
     return titleEntry
 
+
 def finishTitleEntry(titleEntry):
     # delete back end of the entry
     modifiedTitle = titleEntry.replace('" name="description"/>', '')
@@ -28,4 +30,3 @@ def finishTitleEntry(titleEntry):
     finishedTitle = html.unescape(html.unescape(modifiedTitle))
 
     return finishedTitle
-

@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import html
 import re
 
+
 def extractChapterContent(page):  # returns content as a list
     soup = BeautifulSoup(page.content, "html.parser")
     contentChapter = soup.find_all("p")

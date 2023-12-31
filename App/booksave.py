@@ -3,6 +3,7 @@ import userInteractions
 import os
 from pathlib import Path
 
+
 def checkBook(bookTitle):  # check if a book with the same name exists
     filename = str(bookTitle) + ".html"
     fullPath = os.path.join("../Books/HTML", filename)
@@ -17,6 +18,7 @@ def checkBook(bookTitle):  # check if a book with the same name exists
             return False
     else:
         return True
+
 
 def writeBook(bookTitle, chapterTitle, chapterContent):  # saves it as a .txt/markdown | append one chapter
     # sets the variables once more for a better understanding of the meanings
