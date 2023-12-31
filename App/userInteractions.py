@@ -49,4 +49,4 @@ def printSkip() -> None:
 
 def printProgress(chapterURLs, currentURL) -> None:
     percent = ((currentURL + 1) / len(chapterURLs)) * 100
-    print("Progress: " + str(percent) + " %")
+    print("Progress: " + str(round(percent, 1)) + " %")

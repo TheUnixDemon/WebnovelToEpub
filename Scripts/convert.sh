@@ -33,7 +33,7 @@ echo ""
 fullPathOutput=`pwd`/"Books/EPUB/${filename}.epub"
 
 cd Resources/calibre-bin/calibre/bin
-./ebook-convert "${fullPath}" "${fullPathOutput}" --authors "${author}" --input-encoding utf-8 --title "${title}" --output-profile generic_eink_hd
+./ebook-convert "${fullPath}" "${fullPathOutput}" --authors "Author: ${author}" --input-encoding utf-8 --title "${title}" --output-profile generic_eink_hd
 
 echo ""
 echo "---- Conversion complete! ----"
