@@ -11,7 +11,7 @@ def extractTitleEntry(page): # get correct title entry(uncleared)
             titleEntry = str(row_title[i]) # extracted title entry        
             break
 
-    if(titleEntry is None):
+    if titleEntry is None:
         titleEntry = "Chapter unknown"
     
     return titleEntry

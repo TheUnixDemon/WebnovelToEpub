@@ -14,7 +14,7 @@ def printNameError(): # if a book with same name exists
     choice = input("Do you want to override the old book? (yes/no): ")
     print("")
     
-    if(choice == "yes" or choice == "y"):
+    if choice == "yes" or choice == "y":
         return True
     
     else:

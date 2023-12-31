@@ -16,16 +16,16 @@ def makeBook(bookTitle):
     for i in range(0, len(chapterURLs)): # one loop = one chapter
         URL = chapterURLs[i]
         
-        while(True): # check if response is set or timeout
+        while True: # check if response is set or timeout
             page = handleRequest.makeRequest(URL, session) # executes requests, handles 
-            if(page != False): # no errors
+            if page != False: # no errors
                 break
                 
-            elif(page == False): # reaction against timeout
+            elif page == False: # reaction against timeout
                 userInteractions.printTimeout()
                 time.sleep(45)
             
-        if(page == None): # URL is probably not correct | error 404
+        if page == None: # URL is probably not correct | error 404
             userInteractions.printSkip()
             continue # skip the URL
         

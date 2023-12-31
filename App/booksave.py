@@ -9,7 +9,7 @@ def checkBook(bookTitle): # check if a book with the same name exists
     
     if os.path.exists(fullPath):
         userResponse = userInteractions.printNameError()
-        if(userResponse == True):
+        if userResponse == True:
             os.remove(fullPath)
             return True
         

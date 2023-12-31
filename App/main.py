@@ -6,11 +6,11 @@ import userInteractions
 userInteractions.printStart()
 
 def checkBooks():
-    while(True):
+    while True:
         bookTitle = input("Please enter the book filename: ")
         check = booksave.checkBook(bookTitle)
         
-        if(check == True):
+        if check == True:
             return bookTitle
 
 bookTitle = checkBooks() # setted the bookTitle
