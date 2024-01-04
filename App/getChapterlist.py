@@ -3,9 +3,8 @@ import json
 import sys
 import re
 
+sys.path.append('configs')
 import getConfig
-sys.path.append('requests')
-import handleRequest
 import userInteractions
 
 def getServerConfig(config: json, URL: str): # gets spezific server configuration
@@ -43,30 +42,26 @@ def genURL(serverConfig: json, URL: str) -> list:
                 page = True
             case _: # special case for additional parameters
                 contentURL += str(key) + "=" + str(value) + "&"
+         
+    # deletes useless "&" variables form the URL
+    if contentURL.endswith("&"):
+        contentURL = contentURL[:-1]
           
     # checks the URLs if they are reacheably
     session = requests.session()  
     if page is True: # adds the page parameter
         contentURLs = []
-        i = 0
-        while(True):
-            pageRelatedURL = contentURL + requestConfig["params"]["page"] + str(i) # for chapterLists with more than one site
-            request = handleRequest.makeRequest(pageRelatedURL, session)  # executes requests, handles 
-            if request:  # no errors
-                contentURLs.append(pageRelatedURL)
-                print(pageRelatedURL)
-            else: # expects all chapter pages are written within the contentURLs
-                return contentURLs
-            i = i + 1
+        for i in range(0, 10):
+            pageRelatedURL = contentURL + requestConfig["params"]["page"] + "=" + str(i) # for chapterLists with more than one site
+            contentURLs.append(pageRelatedURL)
+        return contentURLs
     else:
-        request = handleRequest.makeRequest(contentURL, session)
-        if request:
-            return contentURL
+        return contentURL
         
         
 def getChapterlist(URL: str):
-    config: json = getConfig.getConfig()
-    serverConfig: json = getServerConfig(config, URL) 
-
-    contentURL = genURL(serverConfig, URL)
+    serverConfig: json = getConfig.getServerConfig(URL) 
+    contentURL = genURL(serverConfig, URL) # creates the ChapterlistURLs
     return contentURL
+
+print(getChapterlist("https://novelbin.me/novel-book/the-kings-avatar#tab-chapters-title"))
