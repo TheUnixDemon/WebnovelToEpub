@@ -5,6 +5,7 @@ __pycache__/
 
 # created files / books
 .vscode/
+config.json
 App/indexURL.txt
 Resources/
 Books/

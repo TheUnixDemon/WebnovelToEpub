@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 from typing import List
 
 import userInteractions
@@ -11,7 +10,7 @@ def checkBook(bookTitle: str) -> bool:  # check if a book with the same name exi
 
     if os.path.exists(fullPath):
         userResponse = userInteractions.printNameError()
-        if userResponse == True:
+        if userResponse is True:
             os.remove(fullPath)
             return True
 

@@ -4,14 +4,14 @@ import time
 import bookmeta
 import booksave
 import handleExtractions
-import handleRequest
 sys.path.append('requests')
+import handleRequest
 import requests
 import userInteractions
 
 
 def makeBook(bookTitle: str) -> None:
-    session = requests.session()  # set session for entire connection
+    session = requests.session()  # sets session for entire connection
     chapterURLs = bookmeta.returnChapterURLs()  # get all URLs within indexURL
     for i in range(0, len(chapterURLs)):  # one loop = one chapter
         URL = chapterURLs[i]
