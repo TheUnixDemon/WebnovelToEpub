@@ -63,5 +63,3 @@ def getChapterlist(URL: str):
     serverConfig: json = getConfig.getServerConfig(URL) 
     contentURL = genURL(serverConfig, URL) # creates the ChapterlistURLs
     return contentURL
-
-print(getChapterlist("https://novelbin.me/novel-book/the-kings-avatar#tab-chapters-title"))
