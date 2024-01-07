@@ -1,6 +1,8 @@
 import json
 import re
 
+import verifyConfig
+
 def getConfig() -> json:
     try:
         with open("configs/config.json", "r") as f:
@@ -11,8 +13,10 @@ def getConfig() -> json:
     except json.JSONDecodeError as e:
         print(f"Error loading JSON configuration: {e}")
 
+
 def getServerConfig(URL: str): # gets spezific server configuration
     config = getConfig()
     for i in range(0, len(config)):
         if re.search(str(config[i]["server"]), URL):
+            verifyConfig.verifyServerConfig(config[i])
             return config[i]

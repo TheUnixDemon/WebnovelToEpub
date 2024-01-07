@@ -2,6 +2,14 @@ def printStart() -> None:
     print("")
     print("---- START ----")
     print("")
+    
+def chapterDecision(chapterURLs: list) -> None:
+    print("")
+    print("---- CHAPTERS ----")
+    for i in range(0, len(chapterURLs)):
+        print(str(i + 1) + ". " + str(chapterURLs[i]))
+    print("---- CHAPTERS ----")
+    print("")
 
 
 def printEnd() -> None:

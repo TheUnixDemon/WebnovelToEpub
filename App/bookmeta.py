@@ -1,20 +1,25 @@
 import re
 from pathlib import Path
-from typing import List
 
+import chapterURLs as genChapterURLs
+import userInteractions
+
+def chapterDecision(chapterURLs: list) -> list:
+    userInteractions.chapterDecision(chapterURLs)
+    
+    start = int(input("Please set a start chapter: ")) - 1
+    end = int(input("Please set a end chapter: "))
+    print("")
+    return [start, end]
 
 def createChapterURLs() -> None:
-    uncleared_url = input("html adress of a chapter: ")
-    url = re.sub(r"_.*\.html", "_", uncleared_url)  # finds out the right base url
+    URL: str = input("html adress of the book: ")
+    chapterURLs = genChapterURLs.getChapterURLs(URL) # extracts all chapter URLs with the configs
+    chapterRange = chapterDecision(chapterURLs) # sets the chapters that should be saved
 
-    print("")
-    minNum = input("Start chapter number: ")
-    maxNum = input("Final chapter number: ")
-    print("")
-
-    chapterURL = []  # saves all created chatperURLs
-    for i in range(int(minNum), int(maxNum) + 1):  # +1 for a correct final number
-        chapterURL.append(url + str(i) + ".html")
+    chosenChapters = []  # saves all created chatperURLs
+    for i in range(chapterRange[0], chapterRange[1]):  # +1 for a correct final number
+        chosenChapters.append(chapterURLs[i])
 
     # writes the chaterURLs within "chaterindex"
     myfile = Path("./indexURL.txt")
@@ -22,14 +27,14 @@ def createChapterURLs() -> None:
     f = open(myfile)
 
     my_save = open("indexURL.txt", "w")
-    for line in chapterURL:
+    for line in chosenChapters:
         my_save.write(line + "\n")
 
     my_save.close()
 
 
-def returnChapterURLs() -> List[str]:  # returns all URLs as list
-    chapterURLs: List[str] = []
+def returnChapterURLs() -> list:  # returns all URLs as list
+    chapterURLs = []
     my_save = open("indexURL.txt", "r")
     lines = my_save.read().splitlines()
 

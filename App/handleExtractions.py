@@ -1,17 +1,18 @@
 import sys
 from typing import List, Tuple
 
-sys.path.append('extractions')
+sys.path.append("extractions")
+sys.path.append("configs")
 
 import contentExtractor
 import requests
 import titleExtractor
+import json
+import handleConfig
 
-
-def makeExtractions(page: requests.Response) -> Tuple[str, List[str]]:
+def makeExtractions(serverConfig: json, page: requests.Response):
     # extract title
-    titleEntry = titleExtractor.extractTitleEntry(page)  # get correct title entry(uncleared)
-    chapterTitle = titleExtractor.finishTitleEntry(titleEntry)  # get cleared title
+    chapterTitle = titleExtractor.extractTitle(serverConfig, page)
 
     # extract content
     chapterContent = contentExtractor.extractChapterContent(page)  # get cleared content
