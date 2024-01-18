@@ -11,6 +11,7 @@ import handleConfig
 sys.path.append("requests")
 import handleRequest
 
+
 def htmlTranslation(htmlChaptertitle: str) -> str: # changes html expressions into normal text
     chaptertitle = html.unescape(html.unescape(htmlChaptertitle))
     return chaptertitle
@@ -32,6 +33,7 @@ def extractTitle(serverConfig: json, page) -> str:
                 case "section":
                     sectionPattern = value
                     
+    elementsSection = None               
     if classPattern and tagPattern: # search after the tag and the class at the same time
         elements = soup.find_all(tagPattern, class_=classPattern)
         if sectionPattern:
@@ -48,3 +50,11 @@ def extractTitle(serverConfig: json, page) -> str:
             chaptertitle = htmlTranslation(htmlChaptertitle)
             
             return chaptertitle
+        
+'''
+session = requests.session()
+page = handleRequest.makeRequest("", session)
+serverConfig = handleConfig.getServerConfig("")
+title = extractTitle(serverConfig, page)
+print(title)
+'''

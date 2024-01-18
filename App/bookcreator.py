@@ -33,8 +33,8 @@ def makeBook(bookTitle: str) -> None:
             userInteractions.printSkip()
             continue  # skip the URL
 
-        chapterTitle, chapterContent = handleExtractions.makeExtractions(serverConfig, page)  # response = html page
-        booksave.writeBook(bookTitle, chapterTitle, chapterContent)  # writes within a text file for progress saving
-        userInteractions.printProgress(chapterURLs, i)  # i -> progress of chapters
+        #chapterTitle, chapterContent = handleExtractions.makeExtractions(serverConfig, page)  # response = html page
+        #booksave.writeBook(bookTitle, chapterTitle, chapterContent)  # writes within a text file for progress saving
+        #userInteractions.printProgress(chapterURLs, i)  # i -> progress of chapters
 
     session.close()  # delete the session after extraction

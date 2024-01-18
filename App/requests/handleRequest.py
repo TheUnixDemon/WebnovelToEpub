@@ -3,7 +3,7 @@ from typing import Union
 
 import getHeaders
 import requests
-import userInteractions
+#import userInteractions
 
 
 def makeRequest(URL: str, session: requests.Session) -> Union[requests.Response, bool, None]:  # will executed each url entry
@@ -16,7 +16,7 @@ def makeRequest(URL: str, session: requests.Session) -> Union[requests.Response,
         return page  # returns html page if 200
 
     except requests.exceptions.RequestException as e:
-        userInteractions.printRequestError(URL, e)
+        #userInteractions.printRequestError(URL, e)
 
         if isinstance(e, requests.exceptions.HTTPError) and e.response.status_code == 429:  # timeout error code
             return False

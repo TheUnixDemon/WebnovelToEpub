@@ -53,6 +53,7 @@ def usePatterns(ServerConfig: json, soup: BeautifulSoup) -> list:
 
 # extracts the chapterURLs from the chapterlist pages
 def extractChapterURLs(serverConfig: json, URL: str) -> list:
+    print(serverConfig, URL)
     session = requests.session()
      
     page = handleRequest.makeRequest(URL, session)
