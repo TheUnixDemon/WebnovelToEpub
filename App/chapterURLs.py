@@ -60,5 +60,5 @@ def getURLs(serverConfig: json, URL: str) -> list:
 def getChapterURLs(URL: str) -> list:
     serverConfig: json = handleConfig.getServerConfig(URL) # gets server spezific configuration
     chapterURLs = getURLs(serverConfig, URL) # creates the ChapterlistURL/s
-    
+
     return chapterURLs

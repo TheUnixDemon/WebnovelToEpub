@@ -4,6 +4,13 @@ from pathlib import Path
 import chapterURLs as genChapterURLs
 import userInteractions
 
+import sys
+sys.path.append("configs")
+import handleConfig
+import userInteractions
+sys.path.append("extractions")
+import URLExtractor
+
 def chapterDecision(chapterURLs: list) -> list:
     userInteractions.chapterDecision(chapterURLs)
     
@@ -31,7 +38,6 @@ def createChapterURLs() -> None:
         my_save.write(line + "\n")
 
     my_save.close()
-
 
 def returnChapterURLs() -> list:  # returns all URLs as list
     chapterURLs = []

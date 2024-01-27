@@ -3,6 +3,14 @@ import bookmeta
 import booksave
 import userInteractions
 
+import re
+from pathlib import Path
+
+import chapterURLs as genChapterURLs
+import userInteractions
+
+
+
 userInteractions.printStart()
 
 
@@ -11,8 +19,10 @@ def checkBooks() -> str:
         bookTitle = input("Please enter the book filename: ")
         check = booksave.checkBook(bookTitle)
 
-        if check == True:
+        if check:
             return bookTitle
+        else:
+            print("HTML data with the same name detected")
 
 
 bookTitle = checkBooks()  # setted the bookTitle
@@ -20,4 +30,4 @@ bookTitle = checkBooks()  # setted the bookTitle
 bookmeta.createChapterURLs()  # generating chapterURLs without check because of the timeout
 bookcreator.makeBook(bookTitle)  # get content of chapters within indexURL
 
-userInteractions.printEnd()
+#userInteractions.printEnd()
