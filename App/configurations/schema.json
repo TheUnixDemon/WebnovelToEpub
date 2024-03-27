@@ -1,0 +1,43 @@
+{
+    "config": {
+        "type": "array",
+        "items": {
+            "type": "object",
+            "properties": {
+                "server": {"type": "string", "format": "uri"},
+                "request": {
+                    "type": "object",
+                    "properties": {
+                        "url": {"type": "string", "format": "uri"},
+                        "filter": {"type": "string"},
+                        "pattern": {
+                            "type": "object",
+                            "properties": {
+                                "chapterlist": {"type": "object"},
+                                "chaptertitle": {"type": "object"}
+                            },
+                            "additionalProperties": true
+                        },
+                        "params": {"type": "object"}
+                    },
+                    "required": ["url", "filter", "pattern", "params"],
+                    "additionalProperties": true
+                }
+            },
+            "required": ["server", "request"],
+            "additionalProperties": true
+        }
+    },
+    "defaultHttpHeader": {
+        "type": "object",
+        "properties": {
+            "Accept": {"type": "string"},
+            "Accept-Encoding": {"type": "string"},
+            "Accept-Language": {"type": "string"},
+            "Connection": {"type": "string"},
+            "User-Agent": {"type": "string"}
+        },
+        "required": ["Accept", "Accept-Encoding", "Accept-Language", "Connection", "User-Agent"],
+        "additionalProperties": false
+    }
+}
