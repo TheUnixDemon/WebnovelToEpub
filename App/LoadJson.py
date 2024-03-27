@@ -11,9 +11,11 @@ class LoadJson:
                 jsonFile: json = json.load(f)
                 return jsonFile
         except FileNotFoundError:
-            print(f"<< Error: File '{jsonFileName}' not found. >>")
+            print(f"<< Error: File 'configurations/{jsonFileName}' not found. >>")
+            exit()
         except json.JSONDecodeError as e:
-            print(f"<< Error: loading JSON configuration from '{jsonFileName}': {e} >>")
+            print(f"<< Error: loading JSON configuration from 'configurations/{jsonFileName}': {e} >>")
+            exit()
             
     def getConfig(self) -> json:
         return self.__config
