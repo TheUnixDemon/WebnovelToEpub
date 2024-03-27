@@ -1,36 +1,24 @@
 # Website2Book
-This program is used for a convert of a HTML into a EBook/EPUB format. It's mainly based on Python 3.11.6 and Shell Script. It uses also Calibre for the convertion into the EPUB format. 
-
-<b>For now It's not native usable for Windows user because of the Shell Scripts.</b>
-
-## How to use
-After the installation of all requirements you can execute ```start.sh``` within the root folder of the repository.
-
-```bash
-#!/bin/bash
-./start.sh
-```
-
-After that you need a URL of an chapter your choice. The program generates with this information a list of the chapters for the requests. You can see these generated URLs within ```App/indexURL.txt```. I recommend to look in there if you get back the error code ```404```.
-
-The URL generation is still in progress.
-
+This Python-based application is a configurable automated converter that transforms web-based books into an eBook/EPUB format. It mainly uses the libraries Requests, BeautifulSoup and EbookLib for the converting progess into EPUB.
 
 ## Requirements
-> &GreaterGreater; 3.11.6 Python
+> &GreaterGreater; 3.11.8 Python or higher
 
-### Installation of the base packages
+### Installing via requirements.txt
 ```bash
 #!/bin/bash
-pip install requests
-pip install pathlib
-pip install regex
+git clone https://github.com/TheUnixDemon/Website2Book
+cd ./Website2Book
+pip install -r requirements.txt
 ```
 
-### Other
-Other requirements like Calibre will be installed locally within the folder `Resources`.
+## How to use
+Before you can actually use the application for fetching a web book you have to create an configuration entry for your targeted server within the file `configurations/config.json`.  
+Here to the [Configuration Guide](CONFIG.md).
 
-## Important
-It's only testes on Arch based Linux systems. The installation could be a bit different on other Linux based systems.
+After the installation of all requirements and creating a configuration entry for you target server you can start the application via executing the file main.py.
 
-The license excludes Calibre because it is not developed by me and is only integrated into the project. I have no rights on Calibre.
+```bash
+#!/bin/bash
+python main.py
+```
