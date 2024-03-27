@@ -30,7 +30,8 @@ class CreateEPUB:
             lang = self.__bookLanguage
             )
         titleHTML = "<h1 id='chapter'>" + chapterTitle + "</h1>"
-        contentHTML = "\n".join(["<p>{}</p>".format(item) for item in chapterContent]) # adds p tags and make a hole string out of this list
+        #contentHTML = "\n".join(["<p>{}</p>".format(item) for item in chapterContent]) # adds p tags and make a hole string out of this list
+        contentHTML = "\n".join(chapterContent)
         currentChapter.set_content(titleHTML + "\n" + contentHTML) # sets content to current chapter
         self.__ebook.add_item(currentChapter) # adds current chapter to the book
         self.__ebook.toc.append(epub.Link(xhtmlFilename, chapterTitle, "chapter"))

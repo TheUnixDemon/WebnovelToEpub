@@ -74,5 +74,5 @@ class FetchChapterContent:
         chapterContent: list[str] = []
         for element in elements:
             if not element.find_all(["script", "div"]) and len(element) != 0: # checks if tag has some content and don't have more tags within
-                chapterContent.append(element.string)
+                chapterContent.append(str(element)) # str -> with tags, .string -> without tags
         return chapterContent
