@@ -18,7 +18,7 @@ def usePatterns(ServerConfig: json, soup: BeautifulSoup) -> list:
     prefix = ""; suffix = "" # default is empty
     for patternKey in patternKeys:
         if patternKey in patternConfig: # checks if the key is within the dic
-            value = patternConfig[patternKey]
+            value = patternConfig.get(patternKey, None)
             match patternKey:
                 case "class": # filters all after the declared HTML class
                     elements = soup.find_all(class_=value)
@@ -36,6 +36,7 @@ def usePatterns(ServerConfig: json, soup: BeautifulSoup) -> list:
             for a_tag in a_tags:
                 href = a_tag.get("href")
                 chapterURLs.append(prefix + str(href) + suffix)
+
     else:
         a_tags = soup.find_all("a")
         for a_tag in a_tags:
