@@ -1,4 +1,5 @@
 import json
+import os
 
 from ConfigVerify import ConfigVerify
 from ConfigHandler import ConfigHandler
@@ -9,6 +10,12 @@ from FetchChapterContent import FetchChapterContent
 from CreateEPUB import CreateEPUB
 
 import userInput
+
+# checks needed folder
+folderConfig: str = "configurations/"
+if not os.path.exists(folderConfig):
+    print("<< Locale folder named 'configurations/' is needed >>")
+    exit()
 
 # verify json configurations via schema
 verify = ConfigVerify()
@@ -53,6 +60,7 @@ if bookAuthor != "":
 else:
     makeEPUB = CreateEPUB(bookTitle,bookFilename)
 
+print("--- Fetching book ---")
 # get content & make book files
 chapterCounter: int = 1 # show progess
 fetchContent = FetchChapterContent(httpRequest, requestConfig)
@@ -70,4 +78,4 @@ for chapterURL in selectedChapterURLs:
         print("<< Error: No content found at current page >>")
     chapterCounter += 1
 makeEPUB.writeBook()
-print("--- DONE ---")
+print("--- Done ---")
