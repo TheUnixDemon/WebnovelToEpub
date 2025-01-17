@@ -20,7 +20,7 @@ def selectChapters(chapterURLs: list[str]) -> list[str]: # is used after of fetc
     else:
         chapterNumber: int = 1 # counter for chapters
         for chapterURL in chapterURLs:
-            print(chapterNumber + ": " + chapterURL)
+            print(str(chapterNumber) + ": " + chapterURL)
             chapterNumber += 1
             
     while True:

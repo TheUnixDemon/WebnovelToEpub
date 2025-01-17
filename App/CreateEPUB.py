@@ -1,4 +1,5 @@
 from ebooklib import epub
+import requests
 
 class CreateEPUB:
     def __init__(self, bookTitle: str, bookFilename: str, bookAuthor: str = "unknown"):
@@ -37,6 +38,9 @@ class CreateEPUB:
         self.__ebook.toc.append(epub.Link(xhtmlFilename, chapterTitle, "chapter"))
         self.__ebook.spine.append(currentChapter)
         
+    def addCover(self, coverImage: requests.Response) -> None:
+        self.__ebook.set_cover("cover.image", coverImage.content)
+
     def writeBook(self) -> None:
         self.__ebook.add_item(epub.EpubNcx())
         self.__ebook.add_item(epub.EpubNav())
