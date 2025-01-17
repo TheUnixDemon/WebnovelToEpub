@@ -1,3 +1,4 @@
+import requests
 import json
 import os
 
@@ -55,10 +56,16 @@ while True:
 bookFilename: str = userInput.getFilename()
 bookAuthor: str = input("Author: ")
 
-if bookAuthor != "":
-    makeEPUB = CreateEPUB(bookTitle,bookFilename, bookAuthor)
+if not bookAuthor:
+    makeEPUB = CreateEPUB(bookTitle, bookFilename, bookAuthor)
 else:
-    makeEPUB = CreateEPUB(bookTitle,bookFilename)
+    makeEPUB = CreateEPUB(bookTitle, bookFilename)
+
+bookCoverImageURL: str = input("Cover Image URL: ")
+
+if bookCoverImageURL:
+    coverImage: requests.Response = httpRequest.makeRequest(bookCoverImageURL)
+    makeEPUB.addCover(coverImage)
 
 print("--- Fetching book ---")
 # get content & make book files
