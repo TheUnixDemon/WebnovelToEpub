@@ -56,7 +56,7 @@ while True:
 bookFilename: str = userInput.getFilename()
 bookAuthor: str = input("Author: ")
 
-if not bookAuthor:
+if bookAuthor:
     makeEPUB = CreateEPUB(bookTitle, bookFilename, bookAuthor)
 else:
     makeEPUB = CreateEPUB(bookTitle, bookFilename)
