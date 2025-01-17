@@ -5,7 +5,8 @@ __pycache__/
 
 # created files / books
 .vscode/
-*.json
+configurations/config.json
+configurations/header.json
 *.epub
 
 # experimental folder
