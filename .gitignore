@@ -5,6 +5,7 @@ __pycache__/
 
 # created files / books
 .vscode/
+*.json
 
 # experimental folder
 Experimental/
