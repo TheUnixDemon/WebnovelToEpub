@@ -1,4 +1,3 @@
-import argparse
 import requests
 import json
 import os
@@ -14,13 +13,8 @@ from CreateEPUB import CreateEPUB
 
 import chapterSelection
 
-# parameter arguments
+# sets parameter arguments
 param: Parameter = Parameter()
-
-print(f"URL:{param.getUrl()}")
-print(f"Author")
-print(f"Title")
-print(f"Filename")
 
 # checks needed folder
 folderConfig: str = "configurations/"
@@ -33,6 +27,9 @@ verify = ConfigVerify()
 verify.Config()
 verify.defaultHttpHeader()
     
+# prints out current parameter arguments
+param.returnArguments()
+
 # load/set configurations
 config = ConfigHandler(param.getUrl())
 serverConfig: json = config.getServerConfig()
@@ -56,9 +53,13 @@ selectedChapterURLs: list[str] = chapterSelection.selectChapters(chapterURLs)
 makeEPUB = CreateEPUB(param.getTitle(), param.getFilename(), param.getAuthor())
 if param.getCover():
     coverImage: requests.Response = httpRequest.makeRequest(param.getCover())
-    makeEPUB.addCover(coverImage)
+    if isinstance(coverImage, int):
+        httpRequest.handleErrors(coverImage, param.getCover())
+        print(f"<< Cover image [{param.getCover}] can't be used >>")
+    else:
+        makeEPUB.addCover(coverImage)
 
-print("--- creating ebook ---")
+print("--- Creating ebook ---")
 # get content & make book files
 chapterCounter: int = 1 # show progess
 fetchContent = FetchChapterContent(httpRequest, requestConfig)

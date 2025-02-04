@@ -63,8 +63,9 @@ class FetchChapterURLs(FetchChapterList):
                 chapterListURLPage = chapterListURL + paramPage + str(x) # link to one of many chapterlists
                 response = self.__httpRequest.makeRequest(chapterListURLPage)
                 if isinstance(response, int): # checks if errors did happen
-                    self.__httpRequest.handleErrors(response)
+                    self.__httpRequest.handleErrors(response, chapterListURLPage)
                     if response == 404: # not reachable -> expection: last list passed
+                        print("<< RequestError -404- is a common expection and can be ignored normally >>")
                         break
                 else:
                     pageChapterURLs: list[str] = self.fetchChapterURLs(response)
@@ -75,7 +76,7 @@ class FetchChapterURLs(FetchChapterList):
         else: # page is not set
             response = self.__httpRequest.makeRequest(chapterListURL)
             if isinstance(response, int):
-                self.__httpRequest.handleErrors(response)
+                self.__httpRequest.handleErrors(response, chapterListURL)
             else:
                 chapterURLs: list[str] = self.fetchChapterURLs(response)
                 self.__chapterURLs = chapterURLs

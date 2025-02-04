@@ -29,3 +29,6 @@ class Parameter:
         return self.args.cover
     def getFilename(self):
         return (self.args.filename if self.args.filename else self.args.title) + ".epub"
+    
+    def returnArguments(self):
+        print(f"URL:{self.getUrl()}, Title:{self.getTitle()}, Author:{self.getAuthor()}, Cover:{self.getCover()}, Filename:{self.getFilename()}")
