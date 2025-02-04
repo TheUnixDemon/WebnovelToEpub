@@ -1,7 +1,9 @@
+import argparse
 import requests
 import json
 import os
 
+from Parameter import Parameter
 from ConfigVerify import ConfigVerify
 from ConfigHandler import ConfigHandler
 
@@ -10,7 +12,15 @@ from FetchChapterURLs import FetchChapterURLs
 from FetchChapterContent import FetchChapterContent
 from CreateEPUB import CreateEPUB
 
-import userInput
+import chapterSelection
+
+# parameter arguments
+param: Parameter = Parameter()
+
+print(f"URL:{param.getUrl()}")
+print(f"Author")
+print(f"Title")
+print(f"Filename")
 
 # checks needed folder
 folderConfig: str = "configurations/"
@@ -22,15 +32,9 @@ if not os.path.exists(folderConfig):
 verify = ConfigVerify()
 verify.Config()
 verify.defaultHttpHeader()
-
-# user input < URL to book
-while True:
-    url: str = input("Please enter the URL of the book's main page: ")
-    if userInput.validateCommonInput(url): # returned true | no errors
-        break
     
 # load/set configurations
-config = ConfigHandler(url)
+config = ConfigHandler(param.getUrl())
 serverConfig: json = config.getServerConfig()
 requestConfig: json = serverConfig["request"] # new mapping
 serverHttpHeader: json = config.getServerHttpHeader()
@@ -42,32 +46,19 @@ typeServer: bool = requestConfig["params"].get("type", True)
 httpRequest = HttpHandler(serverHttpHeader)
 
 # get chapterURLs
-fetchURLs = FetchChapterURLs(httpRequest, requestConfig, typeServer, url)
+fetchURLs = FetchChapterURLs(httpRequest, requestConfig, typeServer, param.getUrl())
 chapterURLs: list[str] = fetchURLs.getChapterURLs()
 
 # select chapters
-selectedChapterURLs: list[str] = userInput.selectChapters(chapterURLs)
+selectedChapterURLs: list[str] = chapterSelection.selectChapters(chapterURLs)
 
-print("--- Please enter book related metadata ---")
-while True:
-    bookTitle: str = input("Title: ")
-    if userInput.validateCommonInput(bookTitle):
-        break
-bookFilename: str = userInput.getFilename()
-bookAuthor: str = input("Author: ")
-
-if bookAuthor:
-    makeEPUB = CreateEPUB(bookTitle, bookFilename, bookAuthor)
-else:
-    makeEPUB = CreateEPUB(bookTitle, bookFilename)
-
-bookCoverImageURL: str = input("Cover Image URL: ")
-
-if bookCoverImageURL:
-    coverImage: requests.Response = httpRequest.makeRequest(bookCoverImageURL)
+# sets metadata for ebook file
+makeEPUB = CreateEPUB(param.getTitle(), param.getFilename(), param.getAuthor())
+if param.getCover():
+    coverImage: requests.Response = httpRequest.makeRequest(param.getCover())
     makeEPUB.addCover(coverImage)
 
-print("--- Fetching book ---")
+print("--- creating ebook ---")
 # get content & make book files
 chapterCounter: int = 1 # show progess
 fetchContent = FetchChapterContent(httpRequest, requestConfig)
