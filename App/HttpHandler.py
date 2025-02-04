@@ -17,12 +17,16 @@ class HttpHandler:
         except requests.exceptions.RequestException as e:
             return e.response.status_code # returns error code
 
-    def handleErrors(self, response: requests) -> None:
-        if isinstance(response, int): # is int if not successfully
-            match response:
-                case 429:
-                    print("<< -429- Timeout - wait 45 secounds >>")
-                    time.sleep(45)
-                case 403:
-                    print("<< -403- Bot has been detected - access is forbidden >>")
-                    exit()
+    # checks error codes and gives a fitting response
+    def handleErrors(self, response: int, url: str = "") -> None:
+        match response: # response has to be a int
+            case 429:
+                print(f"<< RequestError -429- Timeout - wait 30 secounds [{url}] >>")
+                time.sleep(30)
+            case 403:
+                print(f"<< RequestError -403- access forbidden [{url}] >>")
+                exit()
+            case 404:
+                print(f"<< RequestError -404- not found [{url}] >>")
+            case _:
+                print(f"<< RequestError -{response}- error code [{url}] >>")

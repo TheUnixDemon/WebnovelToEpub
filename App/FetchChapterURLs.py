@@ -6,6 +6,7 @@ import re
 from FetchChapterList import FetchChapterList
 from HTMLSearch import HTMLSearch
 
+# uses FetchChapterLists base chapterlist, modifies it and fetches the chapterurls
 class FetchChapterURLs(FetchChapterList):
     def __init__(self, httpRequest: requests, requestConfig: json, typeServer: bool, url: str):
         super().__init__(requestConfig, typeServer, url)
@@ -16,6 +17,7 @@ class FetchChapterURLs(FetchChapterList):
         self.__HTMLpraser = HTMLSearch() 
         self.setChapterURLs()
 
+    # will be executed by self.setChapterURLs to get the urls within chapterlist
     def fetchChapterURLs(self, response: requests) -> list[str]: # fetches the urls out of the chapterlist page/s
         patternChapterList = self.__requestConfig["pattern"]["chapterlist"]
         soup = BeautifulSoup(response.content, "html.parser")
@@ -63,8 +65,9 @@ class FetchChapterURLs(FetchChapterList):
                 chapterListURLPage = chapterListURL + paramPage + str(x) # link to one of many chapterlists
                 response = self.__httpRequest.makeRequest(chapterListURLPage)
                 if isinstance(response, int): # checks if errors did happen
-                    self.__httpRequest.handleErrors(response)
+                    self.__httpRequest.handleErrors(response, chapterListURLPage)
                     if response == 404: # not reachable -> expection: last list passed
+                        print("<< RequestError -404- is a common expection and can be ignored normally >>")
                         break
                 else:
                     pageChapterURLs: list[str] = self.fetchChapterURLs(response)
@@ -75,10 +78,11 @@ class FetchChapterURLs(FetchChapterList):
         else: # page is not set
             response = self.__httpRequest.makeRequest(chapterListURL)
             if isinstance(response, int):
-                self.__httpRequest.handleErrors(response)
+                self.__httpRequest.handleErrors(response, chapterListURL)
             else:
                 chapterURLs: list[str] = self.fetchChapterURLs(response)
                 self.__chapterURLs = chapterURLs
         
+    # returns fetched(by setChapterURLs) chapterUrls
     def getChapterURLs(self) -> list[str]:
         return self.__chapterURLs

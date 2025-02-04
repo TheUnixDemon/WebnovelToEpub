@@ -1,13 +1,3 @@
-def validateCommonInput(answer: str) -> bool: # for url, title & more
-    try:
-        if answer == "":
-            raise ValueError("Input cannot be empty")
-    except ValueError as e:
-        print("Error:", e)
-        return False
-    else: # no errors
-        return True
-            
 
 def selectChapters(chapterURLs: list[str]) -> list[str]: # is used after of fetching urls
     firstChapter: int = 1
@@ -68,18 +58,3 @@ def selectChapters(chapterURLs: list[str]) -> list[str]: # is used after of fetc
                     break
                 selectedChapterURLs: list[str] = chapterURLs[chapterStart - 1:chapterEnd]
                 return selectedChapterURLs
-                
-            
-def getFilename() -> str: # returns without any suffix
-    while True:
-        try:
-            bookFilename: str = input("Enter the book filename: ")
-            if bookFilename == "":
-                raise ValueError("Input cannot be empty")
-        except ValueError as e:
-            print("Error:", e)
-        else:
-            if "." in bookFilename:
-                splitSuffix: list[str] = bookFilename.split(".")
-                bookFilename: str = splitSuffix[0]
-            return bookFilename

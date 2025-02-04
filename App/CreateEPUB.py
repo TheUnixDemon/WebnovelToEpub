@@ -2,7 +2,7 @@ from ebooklib import epub
 import requests
 
 class CreateEPUB:
-    def __init__(self, bookTitle: str, bookFilename: str, bookAuthor: str = "unknown"):
+    def __init__(self, bookTitle: str, bookFilename: str, bookAuthor: str):
         # part of book structure
         self.__ebook = epub.EpubBook()
         self.__ebook.spine = ["nav"]
@@ -11,7 +11,7 @@ class CreateEPUB:
         self.__bookTitle = bookTitle
         self.__bookAuthor = bookAuthor
         self.__bookLanguage = "en"
-        self.__bookFilename = bookFilename + ".epub"
+        self.__bookFilename = bookFilename
         self.__xhtmlFileNumber: int = 1 # for valid file names
         self.addMetadata() # adds metadata to the book
             
@@ -39,7 +39,7 @@ class CreateEPUB:
         self.__ebook.spine.append(currentChapter)
         
     def addCover(self, coverImage: requests.Response) -> None:
-        self.__ebook.set_cover("cover.image", coverImage.content)
+        self.__ebook.set_cover("cover.img", coverImage.content)
 
     def writeBook(self) -> None:
         self.__ebook.add_item(epub.EpubNcx())
