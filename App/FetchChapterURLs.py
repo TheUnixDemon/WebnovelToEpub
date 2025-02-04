@@ -6,6 +6,7 @@ import re
 from FetchChapterList import FetchChapterList
 from HTMLSearch import HTMLSearch
 
+# uses FetchChapterLists base chapterlist, modifies it and fetches the chapterurls
 class FetchChapterURLs(FetchChapterList):
     def __init__(self, httpRequest: requests, requestConfig: json, typeServer: bool, url: str):
         super().__init__(requestConfig, typeServer, url)
@@ -16,6 +17,7 @@ class FetchChapterURLs(FetchChapterList):
         self.__HTMLpraser = HTMLSearch() 
         self.setChapterURLs()
 
+    # will be executed by self.setChapterURLs to get the urls within chapterlist
     def fetchChapterURLs(self, response: requests) -> list[str]: # fetches the urls out of the chapterlist page/s
         patternChapterList = self.__requestConfig["pattern"]["chapterlist"]
         soup = BeautifulSoup(response.content, "html.parser")
@@ -81,5 +83,6 @@ class FetchChapterURLs(FetchChapterList):
                 chapterURLs: list[str] = self.fetchChapterURLs(response)
                 self.__chapterURLs = chapterURLs
         
+    # returns fetched(by setChapterURLs) chapterUrls
     def getChapterURLs(self) -> list[str]:
         return self.__chapterURLs

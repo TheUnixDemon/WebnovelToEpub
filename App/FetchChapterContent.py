@@ -4,6 +4,7 @@ import json
 
 from HTMLSearch import HTMLSearch
 
+# fetches the chapter content(title and chapter content) within each chapterurl(fetched by FetchChapterURLs)
 class FetchChapterContent:
     def __init__(self, httpRequest: requests, requestConfig: json):
         self.__httpRequest = httpRequest
