@@ -19,5 +19,10 @@ After the installation of all requirements and creating a configuration entry fo
 
 ```bash
 #!/bin/bash
-python main.py
+python main.py --help
+...
+python main.py --title "Hollow Fantasy" --author "TheCreatorHimself" --cover "https://novelsite/hollowfantasy/hollowfantasycover.png" --url "https://novelsite/hollowfantasy/overview.html"
+...
 ```
+
+It's recommented for configuration purposes to use `--debug` for more informations about the current configuration status and it's responses to that. If you want to have a deeper view into the web scraper part you should use `--debughtml`. `--debughtml` shows the very process of the web scraper part related to your configuration.
