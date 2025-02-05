@@ -9,17 +9,18 @@ class HttpHandler:
         
     def makeRequest(self, url: str) -> requests:
         try:
-            time.sleep(1) # for timeout prevention
             page = self.__session.get(url, headers=self.__httpHeader)
             page.raise_for_status()
             return page
-    
         except requests.exceptions.RequestException as e:
             return e.response.status_code # returns error code
 
     # checks error codes and gives a fitting response
     def handleErrors(self, response: int, url: str = "") -> None:
         match response: # response has to be a int
+            case 504:
+                print(f"<< RequestError -504- Timeout - wait 30 secounds [{url}] >>")
+                time.sleep(30)
             case 429:
                 print(f"<< RequestError -429- Timeout - wait 30 secounds [{url}] >>")
                 time.sleep(30)
