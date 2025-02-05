@@ -2,7 +2,7 @@ import requests
 import json
 import os
 
-from Parameter import Parameter
+from Argument import Argument
 from ConfigVerify import ConfigVerify
 from ConfigHandler import ConfigHandler
 
@@ -14,7 +14,7 @@ from CreateEPUB import CreateEPUB
 import chapterSelection
 
 # sets parameter arguments
-param: Parameter = Parameter()
+param: Argument = Argument()
 
 # checks needed folder
 folderConfig: str = "configurations/"
@@ -38,17 +38,25 @@ serverHttpHeader: json = config.getServerHttpHeader()
 
 # gets server type (extern = true or intern = false)
 typeServer: bool = requestConfig["params"].get("type", True)
+if param.getDebug():
+    print(f"<< ServerType:{typeServer} -CONFIG- -DEBUGMODE- >>")
 
 # creates request instance
 httpRequest = HttpHandler(serverHttpHeader)
 
 # get chapterURLs
-fetchURLs = FetchChapterURLs(httpRequest, requestConfig, typeServer, param.getUrl())
+if param.getDebug():
+    print(f"<< starting fetching process of chapterlist and it's chapter urls -DEBUGMODE- >>")
+fetchURLs = FetchChapterURLs(httpRequest, requestConfig, typeServer, param.getUrl(), param.getDebug(), param.getDebugHtml())
 chapterURLs: list[str] = fetchURLs.getChapterURLs()
+if param.getDebug():
+    print("<< chapterlist fetching process is finished -DEBUGMODE- >>")
 
-# select chapters
+# select chapters via external function
 selectedChapterURLs: list[str] = chapterSelection.selectChapters(chapterURLs)
 
+if param.getDebug():
+    print("<< creating ebook and adding metadata(title, filename, author, cover, ...) -DEBUGMODE- >>")
 # sets metadata for ebook file
 makeEPUB = CreateEPUB(param.getTitle(), param.getFilename(), param.getAuthor())
 if param.getCover():
