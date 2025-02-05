@@ -6,6 +6,15 @@ class HTMLSearch:
     
     def getSoup(self) -> BeautifulSoup:
         return self.__soup
+    
+    def returnSoup(self):
+        if not self.__soup:
+            print("<< B4SError: Soup is empty or not set >>")
+        elif isinstance(self.__soup, list):
+            for element in self.__soup:
+                print(element.prettify())
+        else:
+            print(self.__soup.prettify())
         
     # searches elements and creates a soup list
     def searchElements(self, tagHtml: str = None, classHtml: str = None, idHtml: str = None):
