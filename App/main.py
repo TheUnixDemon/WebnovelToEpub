@@ -80,7 +80,7 @@ for chapterURL in selectedChapterURLs:
     if len(chapterTitle) > 0 and len(chapterContent) > 0: # checks if content is found
         makeEPUB.addChapter(chapterTitle, chapterContent)
         progressInPercent: float = ((chapterCounter / len(selectedChapterURLs)) * 100)
-        print("Saving progress: " + str(round(progressInPercent, 1)) + " %")
+        print("Saving progress: " + str(round(progressInPercent, 2)) + " %")
     else:
         print("<< Error: No content found at current page >>")
     chapterCounter += 1

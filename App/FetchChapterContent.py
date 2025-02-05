@@ -45,7 +45,6 @@ class FetchChapterContent:
         if tagHtml or tagClassHtml or tagIdHtml:
             self.__HTMLpraser.searchElements(tagHtml, tagClassHtml, tagIdHtml)
         
-        
     def getChapterTitle(self) -> str: # returns without tags as string
         self.setDefaultTag(None)
         self.fetchChapter("chaptertitle") # fetches the title of the chapter

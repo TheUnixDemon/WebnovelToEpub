@@ -116,7 +116,6 @@ class FetchChapterURLs(FetchChapterList):
                         print(f"<< successfully added chapter urls out of chapterlist [{chapterListURL}] -DEBUGMODE- >>")
                     break
 
-        
     # returns fetched(by setChapterURLs) chapterUrls
     def getChapterURLs(self) -> list[str]:
         return self.__chapterURLs
