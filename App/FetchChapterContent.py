@@ -11,20 +11,23 @@ class FetchChapterContent:
         self.__requestConfig = requestConfig
         self.__HTMLpraser = HTMLSearch()
 
+    # makes a request to needed chapter url and sets attribute
     def setChapter(self, chapterURL: str) -> None:
-        response = self.__httpRequest.makeRequest(chapterURL)
-        if isinstance(response, int):
-            self.__httpRequest.handleErrors(response)
-            if response == 404:
-                print("<< -404- chapter not reachable >>") # not reachable, no content is  -> program ends itself
-                exit()
-        else: # request was successfull
-            self.__chapter: requests = response
+        while True: # repeats same url for timeout cases until successful
+            response = self.__httpRequest.makeRequest(chapterURL)
+            if isinstance(response, int):
+                self.__httpRequest.handleErrors(response, chapterURL)
+                if response == 404: # not expected error
+                    exit()
+            else: # request was successfull
+                self.__chapter: requests = response
+                break
 
     # sets default values if not setted within the configs
     def setDefaultTag(self, tag) -> None:
         self.__defaultTag: str = tag
         
+    # base search through the needed pages (call by getChapterTitle and getChapterContent)
     def fetchChapter(self, pattern: str) -> BeautifulSoup:
         soup: BeautifulSoup = BeautifulSoup(self.__chapter.content, "html.parser")
         self.__HTMLpraser.setSoup(soup)

@@ -73,39 +73,48 @@ class FetchChapterURLs(FetchChapterList):
         paramPage: str = self.__requestConfig["params"].get("page", False)  # sets if only one chapterlist or more
         chapterListURL: str = self.__chapterListURL
         if self.__debug:
-            print(f"<< chapterlist pages:{paramPage} -CONFIG- -DEBUGMODE- >>")
+            print(f"<< chapterlist page setting:{paramPage} -CONFIG- -DEBUGMODE- >>")
         if paramPage: # if page is set
             paramPageStart: int = self.__requestConfig["params"].get("pageStart", 0) # sets the first page number (PAGE=0)
             x: int = paramPageStart
             while (True):
                 chapterListURLPage = chapterListURL + paramPage + str(x) # link to one of many chapterlists
                 if self.__debug:
-                    print(f"<< proceed with fetching process of chapterlist page:{chapterListURLPage} -DEBUGMODE- >>")
+                    print(f"<< proceed with fetching process of chapterlist page [{chapterListURLPage}] -DEBUGMODE- >>")
                 response = self.__httpRequest.makeRequest(chapterListURLPage)
                 if isinstance(response, int): # checks if errors did happen
                     self.__httpRequest.handleErrors(response, chapterListURLPage)
                     if response == 404: # not reachable -> expection: last list passed
                         print("<< RequestError -404- is a common expection here and can be ignored normally >>")
                         break
+                    else: # repeat with same chapterlist page expection: timeout
+                        continue
                 else:
                     pageChapterURLs: list[str] = self.fetchChapterURLs(response)
-                    if len(pageChapterURLs) is 0: # contains no links -> expection: only empty lists are remaining
+                    if len(pageChapterURLs) == 0: # contains no links -> expection: only empty lists are remaining
                         break
                     self.__chapterURLs.extend(pageChapterURLs)
                     if self.__debug:
-                        print(f"<< successfully added chapter urls out of chapterlist:{chapterListURLPage} -DEBUGMODE- >>")
+                        print(f"<< successfully added chapter urls out of chapterlist [{chapterListURLPage}] -DEBUGMODE- >>")
                 x += 1 # goes to the next page
         else: # page is not set
-            if self.__debug:
-                print(f"<< proceed with fetching process of chapterlist:{chapterListURL} -DEBUGMODE- >>")
-            response = self.__httpRequest.makeRequest(chapterListURL)
-            if isinstance(response, int):
-                self.__httpRequest.handleErrors(response, chapterListURL)
-            else:
-                chapterURLs: list[str] = self.fetchChapterURLs(response)                    
-                self.__chapterURLs = chapterURLs
+            while True: # repeats same url for timeout cases until successful
                 if self.__debug:
-                    print(f"<< successfully added chapter urls out of chapterlist:{chapterListURL} -DEBUGMODE- >>")
+                    print(f"<< proceed with fetching process of chapterlist [{chapterListURL}] -DEBUGMODE- >>")
+                response = self.__httpRequest.makeRequest(chapterListURL)
+                if isinstance(response, int):
+                    self.__httpRequest.handleErrors(response, chapterListURL)
+                    if response == 404: # not reachable -> expection: only chapterlist not reachable
+                        print(f"<< RequestError -404- only chapterlist not reachable [{chapterListURL}] >>")
+                        exit()
+                    else: # repeat with same chapterlist page expection: timeout
+                        continue
+                else:
+                    chapterURLs: list[str] = self.fetchChapterURLs(response)                    
+                    self.__chapterURLs = chapterURLs
+                    if self.__debug:
+                        print(f"<< successfully added chapter urls out of chapterlist [{chapterListURL}] -DEBUGMODE- >>")
+                    break
 
         
     # returns fetched(by setChapterURLs) chapterUrls
