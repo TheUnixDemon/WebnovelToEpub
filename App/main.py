@@ -67,7 +67,7 @@ if param.getCover():
         httpRequest.handleErrors(coverImage, param.getCover())
         print(f"<< Cover image [{param.getCover}] can't be used >>")
     else:
-        makeEPUB.addCover(coverImage.content)
+        makeEPUB.addCover(coverImage)
 
 print("--- Creating ebook ---")
 # get content & make book files
