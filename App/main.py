@@ -67,9 +67,7 @@ if param.getCover():
         httpRequest.handleErrors(coverImage, param.getCover())
         print(f"<< Cover image [{param.getCover}] can't be used >>")
     else:
-        # convert jpeg and other formats in PNG for correct usage within reader apps
-        coverImagePng: Image = Image.open(io.BytesIO(coverImage)).save("cover.png", "PNG") 
-        makeEPUB.addCover(coverImagePng)
+        makeEPUB.addCover(coverImage.content)
 
 print("--- Creating ebook ---")
 # get content & make book files

@@ -39,7 +39,7 @@ class CreateEPUB:
         self.__ebook.spine.append(currentChapter)
         
     def addCover(self, coverImage: requests.Response) -> None:
-        self.__ebook.set_cover("cover.png", coverImage.content)
+        self.__ebook.set_cover("cover.img", coverImage.content)
 
     def writeBook(self) -> None:
         self.__ebook.add_item(epub.EpubNcx())
