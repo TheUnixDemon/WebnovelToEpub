@@ -2,6 +2,7 @@ from PIL import Image
 import requests
 import json
 import os
+import io
 
 from Argument import Argument
 from ConfigVerify import ConfigVerify
@@ -67,7 +68,7 @@ if param.getCover():
         print(f"<< Cover image [{param.getCover}] can't be used >>")
     else:
         # convert jpeg and other formats in PNG for correct usage within reader apps
-        coverImagePng: Image = Image.open(coverImage).save("cover.png", "PNG") 
+        coverImagePng: Image = Image.open(io.BytesIO(coverImage)).save("cover.png", "PNG") 
         makeEPUB.addCover(coverImagePng)
 
 print("--- Creating ebook ---")
