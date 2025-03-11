@@ -18,6 +18,9 @@ class HttpHandler:
     # checks error codes and gives a fitting response
     def handleErrors(self, response: int, url: str = "") -> None:
         match response: # response has to be a int
+            case 500:
+                print(f"<< RequestError -500- Timeout - wait 30 secounds [{url}] >>")
+                time.sleep(30)
             case 504:
                 print(f"<< RequestError -504- Timeout - wait 30 secounds [{url}] >>")
                 time.sleep(30)
