@@ -10,7 +10,7 @@ class Argument:
                 It's fully configurable and targets simple webnovel sites with the purpose to create configs  
                 for the wished websites even if those sites are new or unknown.
             """,
-            epilog = "Configuration guide: https://github.com/TheUnixDemon/Website2Book/blob/main/CONFIG.md")
+            epilog = "Configuration guide: https://github.com/TheUnixDemon/WebnovelToEpub/blob/main/CONFIG.md")
         
         parser.add_argument("-u", "--url", help = "url of chosen webnovel page", required = True)
         parser.add_argument("-t", "--title", help = "book title", required = True)

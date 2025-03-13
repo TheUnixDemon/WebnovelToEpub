@@ -1,4 +1,6 @@
 from ebooklib import epub
+from io import BytesIO
+from PIL import Image
 import requests
 
 class CreateEPUB:
@@ -38,8 +40,14 @@ class CreateEPUB:
         self.__ebook.toc.append(epub.Link(xhtmlFilename, chapterTitle, "chapter"))
         self.__ebook.spine.append(currentChapter)
         
+    # converts cover into png and saves it as ebook cover
     def addCover(self, coverImage: requests.Response) -> None:
-        self.__ebook.set_cover("cover.img", coverImage.content)
+        # convert image into png
+        cover: Image = Image.open(BytesIO(coverImage.content))
+        img_bytes: BytesIO = BytesIO()
+        cover.save(img_bytes, format="PNG")
+        # saves coverted cover in class attribute
+        self.__ebook.set_cover("cover.png", img_bytes.getvalue())
 
     def writeBook(self) -> None:
         self.__ebook.add_item(epub.EpubNcx())
