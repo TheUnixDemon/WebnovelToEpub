@@ -19,6 +19,5 @@ class LoadJson:
             
     def getConfig(self) -> json:
         return self.__config
-    
     def getHttpHeader(self) -> json:
         return self.__httpHeader

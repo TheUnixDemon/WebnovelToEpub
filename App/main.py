@@ -25,7 +25,7 @@ if not os.path.exists(folderConfig):
 # verify json configurations via schema
 verify = ConfigVerify()
 verify.Config()
-verify.defaultHttpHeader()
+# verify.defaultHttpHeader(); for now not needed
     
 # prints out current parameter arguments
 param.returnArguments()
@@ -41,8 +41,12 @@ typeServer: bool = requestConfig["params"].get("type", True)
 if param.getDebug():
     print(f"<< ServerType:{typeServer} -CONFIG- -DEBUGMODE- >>")
 
+# range of sec that will be waited until new request try
+timeoutEach: list[int] = param.returnTimeoutEach()
+# for websites that need everytime a referer to the page itself
+selfReferer: bool = requestConfig.get("selfReferer", False)
 # creates request instance
-httpRequest = HttpHandler(serverHttpHeader)
+httpRequest = HttpHandler(serverHttpHeader, param.getTimeout(), timeoutEach, selfReferer)
 
 # get chapterURLs
 if param.getDebug():
@@ -60,13 +64,16 @@ if param.getDebug():
 # sets metadata for ebook file
 makeEPUB = CreateEPUB(param.getTitle(), param.getFilename(), param.getAuthor())
 if param.getCover():
-    coverImage: requests.Response = httpRequest.makeRequest(param.getCover())
-    if isinstance(coverImage, int):
-        httpRequest.handleErrors(coverImage, param.getCover())
+    response: requests.Response = httpRequest.makeRequest(param.getCover())
+    if isinstance(response, int):
         print(f"<< Cover image [{param.getCover}] can't be used >>")
     else:
-        makeEPUB.addCover(coverImage)
+        # cover is passed to .addCover() as byte steam
+        cover: bytes = response.content
+        makeEPUB.addCover(cover) 
 
+calcTimeInSec: float = (timeoutEach[0] + timeoutEach[1]) / 2 * len(selectedChapterURLs) + len(selectedChapterURLs) * 4
+print(f"Time needed [{round((calcTimeInSec / 60), 2)} min]")
 print("--- Creating ebook ---")
 # get content & make book files
 chapterCounter: int = 1 # show progess

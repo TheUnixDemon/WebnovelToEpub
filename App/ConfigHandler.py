@@ -2,6 +2,7 @@ import json
 
 from LoadJson import LoadJson
 
+# finds and sets correct headers for choosen server by the input url; also sets serverconfig
 class ConfigHandler(LoadJson): # returns config related jsons
     def __init__(self, url: str):
         # loads and sets json configs
@@ -37,3 +38,6 @@ class ConfigHandler(LoadJson): # returns config related jsons
             
     def getServerHttpHeader(self) -> json:
         return self.__ServerHttpHeader
+    
+    def getDefaultHttpHeader(self) -> json:
+        return self.__httpHeader.get("default")

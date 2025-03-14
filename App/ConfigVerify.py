@@ -3,6 +3,7 @@ from jsonschema import validate
 
 from LoadJson import LoadJson
 
+# validades the "config.json" and the "header.json" based on the rules sets within "schema.json"
 class ConfigVerify(LoadJson):
     def __init__(self):
         super().__init__()
@@ -22,9 +23,12 @@ class ConfigVerify(LoadJson):
             print(f"<< 'config.json' fullfills not the requirements {e}>>")
             exit()
 
+'''
+    # for now not needed...
     def defaultHttpHeader(self) -> None:
         try:
             validate(instance=self.__defaultHttpHeader, schema=self.__schemaDefaultHttpHeader)
         except Exception as e:
             print(f"<< 'header.json' fullfills not the requirements: {e}>>")
             exit()
+'''

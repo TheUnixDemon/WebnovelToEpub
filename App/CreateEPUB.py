@@ -1,8 +1,8 @@
 from ebooklib import epub
 from io import BytesIO
 from PIL import Image
-import requests
 
+# writes the epub file
 class CreateEPUB:
     def __init__(self, bookTitle: str, bookFilename: str, bookAuthor: str):
         # part of book structure
@@ -20,11 +20,21 @@ class CreateEPUB:
     def addMetadata(self) -> None:
         self.__ebook.set_title(self.__bookTitle)
         self.__ebook.set_language(self.__bookLanguage)
-        self.__ebook.add_author(self.__bookAuthor)        
+        self.__ebook.add_author(self.__bookAuthor)     
+
+    # converts cover into png and saves it as ebook cover
+    def addCover(self, coverImage: bytes) -> None:
+        # convert image into png
+        cover: Image = Image.open(BytesIO(coverImage))
+        img_bytes: BytesIO = BytesIO()
+        cover.save(img_bytes, format="PNG")
+        img_bytes.seek(0)
+        # saves coverted cover in class attribute
+        self.__ebook.set_cover("cover.png", img_bytes.getvalue(), True)
         
+    # sets filename for current chapter
     def addChapter(self, chapterTitle: str, chapterContent: list[str]) -> None:
-        # sets filename for current chapter
-        xhtmlFilename: str = "file" + str(self.__xhtmlFileNumber) + ".xhtml"
+        xhtmlFilename: str = f"file{self.__xhtmlFileNumber}.xhtml" # intern chapter file
         self.__xhtmlFileNumber += 1
         # adds new chapter
         currentChapter: epub = epub.EpubHtml( # adds metadata for current chapter
@@ -32,22 +42,14 @@ class CreateEPUB:
             file_name = xhtmlFilename,
             lang = self.__bookLanguage
             )
-        titleHTML = "<h1 id='chapter'>" + chapterTitle + "</h1>"
-        #contentHTML = "\n".join(["<p>{}</p>".format(item) for item in chapterContent]) # adds p tags and make a hole string out of this list
-        contentHTML = "\n".join(chapterContent)
-        currentChapter.set_content(titleHTML + "\n" + contentHTML) # sets content to current chapter
-        self.__ebook.add_item(currentChapter) # adds current chapter to the book
+        # adds chaptercontent to chapterfile, puts into the ebook file and sets an entry into the pine, 
+        titleHTML = f"<h1 id='chapter'>{chapterTitle}</h1>"
+        contentHTML = "\n".join(chapterContent) # para1\npara2\npara3; to not make a single paragraph with every content
+        currentChapter.set_content(titleHTML + "\n" + contentHTML) # sets content into chapterfile
+        self.__ebook.add_item(currentChapter) # adds current chapter to book
+        # toc&spine sets the structure and index within the book
         self.__ebook.toc.append(epub.Link(xhtmlFilename, chapterTitle, "chapter"))
         self.__ebook.spine.append(currentChapter)
-        
-    # converts cover into png and saves it as ebook cover
-    def addCover(self, coverImage: requests.Response) -> None:
-        # convert image into png
-        cover: Image = Image.open(BytesIO(coverImage.content))
-        img_bytes: BytesIO = BytesIO()
-        cover.save(img_bytes, format="PNG")
-        # saves coverted cover in class attribute
-        self.__ebook.set_cover("cover.png", img_bytes.getvalue())
 
     def writeBook(self) -> None:
         self.__ebook.add_item(epub.EpubNcx())
