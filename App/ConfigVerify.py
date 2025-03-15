@@ -23,12 +23,11 @@ class ConfigVerify(LoadJson):
             print(f"<< 'config.json' fullfills not the requirements {e}>>")
             exit()
 
-'''
-    # for now not needed...
+
+    # basicly checks if the only necssary "default" header is set
     def defaultHttpHeader(self) -> None:
         try:
             validate(instance=self.__defaultHttpHeader, schema=self.__schemaDefaultHttpHeader)
         except Exception as e:
             print(f"<< 'header.json' fullfills not the requirements: {e}>>")
             exit()
-'''

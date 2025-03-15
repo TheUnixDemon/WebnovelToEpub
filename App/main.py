@@ -26,7 +26,7 @@ if not os.path.exists(folderConfig):
 # verify json configurations via schema
 verify = ConfigVerify()
 verify.Config()
-# verify.defaultHttpHeader(); for now not needed
+verify.defaultHttpHeader()
     
 # prints out current parameter arguments
 param.returnArguments()
