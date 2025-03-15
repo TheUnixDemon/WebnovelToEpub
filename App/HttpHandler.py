@@ -30,7 +30,7 @@ class HttpHandler:
             else: # static duration a = b
                 duration = self.__timeoutEach[0]
             time.sleep(duration)
-        # if selfReferer is in config.json enabled
+        # if selfReferer in config.json is true
         if self.__selfReferer:
             self.__httpHeader["Referer"] = url.encode("utf-8")
         try:
@@ -52,14 +52,12 @@ class HttpHandler:
                 # critical error; exits the program
                 case 403:
                     print(f"<< RequestError -403- access forbidden [{url}] >>")
-                    if "Cookie" in self.__httpHeader:
-                        while True:
-                            cookie: str = input("New Cookie needed?(only value):").strip()
-                            if cookie:
-                                self.__httpHeader["Cookie"] = cookie.encode("utf-8")
-                                break
-                    else:
-                        exit()
+                    # adds a new cookie if error 403; if its successful fetching can be processeded
+                    while True:
+                        cookie: str = input("New Cookie needed?(only value):").strip()
+                        if cookie:
+                            self.__httpHeader["Cookie"] = cookie.encode("utf-8")
+                            break
                 # non critical error; can be handled by
                 case 404:
                     print(f"<< RequestError -404- not found [{url}]")
@@ -70,3 +68,7 @@ class HttpHandler:
     # method is mostly detiminated by arguments like humanlike, morehumanlike and latency
     def getDuration(self, a: int, b: int) -> int:
         return random.randint(a, b) # if a=0, b=5 -> 0-5 (both included)
+    
+    # after all data are collected
+    def closeSession(self):
+        self.__session.close()

@@ -7,7 +7,7 @@ def selectChapters(chapterURLs: list[str]) -> list[str]:
     # prints out other chapter layout if len(chapterURLs) > 300
     if len(chapterURLs) > 300:
         lastNumber = str(len(chapterURLs)) + ": "
-        print(f"{firstChapter}:{chapterURLs[0]} ... {lastChapter}:{chapterURLs[-1]}")
+        print(f"{firstChapter}:{chapterURLs[0]} ... {lastChapter}:{chapterURLs[-1]}") #  [-1] equals to (len(chapterURLs) - 1)
     else:
         chapterNumber: int = 1 # counter for chapters
         for chapterURL in chapterURLs:
@@ -41,7 +41,7 @@ def selectChapters(chapterURLs: list[str]) -> list[str]:
             except ValueError:
                 print("Error: Input has to be a number")
             except Exception as e:
-                print("fError:{e}")
+                print(f"Error:{e}")
             else: # no errors happened
                 break
 

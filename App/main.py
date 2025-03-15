@@ -1,4 +1,5 @@
 import requests
+import time
 import json
 import os
 
@@ -63,17 +64,27 @@ if param.getDebug():
     print("<< creating ebook and adding metadata(title, filename, author, cover, ...) -DEBUGMODE- >>")
 # sets metadata for ebook file
 makeEPUB = CreateEPUB(param.getTitle(), param.getFilename(), param.getAuthor())
+# checks if the cover url is set
 if param.getCover():
-    response: requests.Response = httpRequest.makeRequest(param.getCover())
-    if isinstance(response, int):
-        print(f"<< Cover image [{param.getCover}] can't be used >>")
-    else:
-        # cover is passed to .addCover() as byte steam
-        cover: bytes = response.content
-        makeEPUB.addCover(cover) 
+    coverHttpHeader: json = config.getCoverHttpHeader()
+    coverSelfReferer: bool = requestConfig.get("coverSelfReferer", False)
+    # httpRequest object for cover requests(dedicated server with other config possible)
+    httpRequestCover: HttpHandler = HttpHandler(coverHttpHeader, param.getTimeout(), timeoutEach, coverSelfReferer)
+    response: requests.Response = None
+    while True:
+        response: requests.Response = httpRequestCover.makeRequest(param.getCover())
+        if isinstance(response, int):
+            print(f"<< Cover image [Response: {response}] can't be used >>")
+            continue
+        break
+    # cover is passed to .addCover() as byte steam
+    cover: bytes = response.content
+    makeEPUB.addCover(cover)
+    httpRequestCover.closeSession()
 
-calcTimeInSec: float = (timeoutEach[0] + timeoutEach[1]) / 2 * len(selectedChapterURLs) + len(selectedChapterURLs) * 4
-print(f"Time needed [{round((calcTimeInSec / 60), 2)} min]")
+calcTimeInSec: int = round((timeoutEach[0] + timeoutEach[1]) / 2.0) * len(selectedChapterURLs) + (len(selectedChapterURLs) * 2)
+formatted_time = time.strftime("%H:%M:%S", time.gmtime(calcTimeInSec))
+print(f"--- Necessary Time [{formatted_time}] ---")
 print("--- Creating ebook ---")
 # get content & make book files
 chapterCounter: int = 1 # show progess
@@ -87,7 +98,7 @@ for chapterURL in selectedChapterURLs:
     if len(chapterTitle) > 0 and len(chapterContent) > 0: # checks if content is found
         makeEPUB.addChapter(chapterTitle, chapterContent)
         progressInPercent: float = ((chapterCounter / len(selectedChapterURLs)) * 100)
-        print("Saving progress: " + str(round(progressInPercent, 2)) + " %")
+        print("Saving progress: " + str(round(progressInPercent, 1)) + " %")
     else:
         print("<< Error: No content found at current page >>")
     chapterCounter += 1

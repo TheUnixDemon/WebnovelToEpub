@@ -13,6 +13,7 @@ class ConfigHandler(LoadJson): # returns config related jsons
         # sets server related configs
         self.setServerConfig(url)
         self.setServerHttpHeader()
+        self.setCoverHttpHeader()
 
     def setServerConfig(self, url: str) -> None:
         status: bool = False # stays false if severconfig can not be found
@@ -24,9 +25,6 @@ class ConfigHandler(LoadJson): # returns config related jsons
         if not status:
             print("<< Server config not found >>")
             exit()
-                
-    def getServerConfig(self) -> json:
-        return self.__serverConfig
         
     def setServerHttpHeader(self) -> None: # based on ServerConfig
         headerKey: str = self.__serverConfig["request"].get("header", "default") # json key of the httpHeader
@@ -34,10 +32,29 @@ class ConfigHandler(LoadJson): # returns config related jsons
         if headerKey and not httpHeader: # header not found and not default
             print("<< Configured request header not found >>")
             httpHeader: json = self.__httpHeader.get("default")
-        self.__ServerHttpHeader = httpHeader
+        self.__serverHttpHeader = httpHeader
+
+    # also based on ServerConfig["coverHeader"]
+    def setCoverHttpHeader(self) -> None:
+        headerKey: str = self.__serverConfig["request"].get("coverHeader", None)
+        self.__coverHttpHeader: json = {}
+        # specific header for cover sides not set
+        if not headerKey: 
+            self.__coverHttpHeader = self.__serverHttpHeader
+        # headerKey is found for cover requests
+        else: 
+            httpHeader: json = self.__httpHeader.get(headerKey)
+            # header not found -> coverHttpH = serverHttpH
+            if not httpHeader: 
+                self.__coverHttpHeader = self.__serverHttpHeader
+            else:
+                self.__coverHttpHeader = httpHeader
+
+    def getServerConfig(self) -> json:
+        return self.__serverConfig
+
+    def getCoverHttpHeader(self) -> json:
+        return self.__coverHttpHeader
             
     def getServerHttpHeader(self) -> json:
-        return self.__ServerHttpHeader
-    
-    def getDefaultHttpHeader(self) -> json:
-        return self.__httpHeader.get("default")
+        return self.__serverHttpHeader
