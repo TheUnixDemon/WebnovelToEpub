@@ -1,6 +1,6 @@
 import json
 
-# creates a basic url to the chapterlist that containtes the chapterurls(without paging) and doesnt make any request
+# creates a basic url to the chapterlist that containtes the chapterurls(without paging) and doesn't make any *request*
 class FetchChapterList:
     def __init__(self, requestConfig: json, typeServer: bool, url: str):
         self.__requestConfig = requestConfig
@@ -10,6 +10,7 @@ class FetchChapterList:
         # generating base url for external or internal requests
         self.setChapterListURL()
     
+    # filter: value -> filters the book id out of the given url
     def getBookId(self) -> str:
         # sets variables for fetching the id value
         filter: str = self.__requestConfig.get("filter")
@@ -22,29 +23,31 @@ class FetchChapterList:
         bookId: str = splitEnd[0]
         return bookId
     
+    # sets urls that contains the chapterurls but without page ending(will be added by FetchChapterURLs.py)
     def setChapterListURL(self) -> str: # is the base for the url to chapterlist
         urlBase: str = self.__requestConfig.get("url", None)
+        # typeServer = True; url: https://test.html?id=bookid
         if self.__typeServer is True:
             urlBase += "?"
-        
             # adds id param for chosen book ?id=id
             if "id" in self.__requestConfig["params"]:
-                idParam: str = self.__requestConfig["params"].get("id") + "=" + self.getBookId()
-                urlBase += idParam + "&"
+                idParam: str = f"{self.__requestConfig["params"].get("id")}={self.getBookId()}"
+                urlBase += f"{idParam}&"
                 
             # for common additional keys
             keys = ["add"]
             for key in keys: # adds basic parameters
                 if key in self.__requestConfig["params"]:
-                    urlBase += self.__requestConfig["params"].get(key) + "&"
+                    urlBase += f"{self.__requestConfig["params"].get(key)}&"
                 
+        # typeServer = False; url: https://test/{bookid}.html
         elif self.__typeServer is False:
             urlBase = urlBase.replace("{}", self.getBookId()) # puts bookId into needed url /id/
 
-        # deletes useless & symbol
+        # deletes symbols on the end of the url that are not needed (& or ?)
         if urlBase.endswith("&") or urlBase.endswith("?"):
             urlBase = urlBase[:-1]
-        # sets url
+        # sets new chapterListURL
         self.__chapterListURL: str = urlBase
         
     def getChapterListURL(self) -> str:

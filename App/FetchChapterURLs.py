@@ -6,7 +6,7 @@ import re
 from FetchChapterList import FetchChapterList
 from HTMLSearch import HTMLSearch
 
-# uses FetchChapterLists base chapterlist, modifies it and fetches the chapterurls
+# uses FetchChapterLists url to the list of chapters(without paging), modifies it(add pages if possible) and fetches the chapterurls
 class FetchChapterURLs(FetchChapterList):
     def __init__(self, httpRequest: requests, requestConfig: json, typeServer: bool, url: str, debug: bool, debughtml: bool):
         super().__init__(requestConfig, typeServer, url)
@@ -83,7 +83,6 @@ class FetchChapterURLs(FetchChapterList):
                     print(f"<< proceed with fetching process of chapterlist page [{chapterListURLPage}] -DEBUGMODE- >>")
                 response = self.__httpRequest.makeRequest(chapterListURLPage)
                 if isinstance(response, int): # checks if errors did happen
-                    self.__httpRequest.handleErrors(response, chapterListURLPage)
                     if response == 404: # not reachable -> expection: last list passed
                         print("<< RequestError -404- is a common expection here and can be ignored normally >>")
                         break
@@ -103,7 +102,6 @@ class FetchChapterURLs(FetchChapterList):
                     print(f"<< proceed with fetching process of chapterlist [{chapterListURL}] -DEBUGMODE- >>")
                 response = self.__httpRequest.makeRequest(chapterListURL)
                 if isinstance(response, int):
-                    self.__httpRequest.handleErrors(response, chapterListURL)
                     if response == 404: # not reachable -> expection: only chapterlist not reachable
                         print(f"<< RequestError -404- only chapterlist not reachable [{chapterListURL}] >>")
                         exit()

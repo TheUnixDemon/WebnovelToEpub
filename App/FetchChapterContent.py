@@ -4,10 +4,10 @@ import json
 
 from HTMLSearch import HTMLSearch
 
-# fetches the chapter content(title and chapter content) within each chapterurl(fetched by FetchChapterURLs)
+# fetches chapter content(title and paragraphes of chapter) within each returned conent based on chapterurl(fetched by fetchChapterURLs)
 class FetchChapterContent:
     def __init__(self, httpRequest: requests, requestConfig: json):
-        self.__httpRequest = httpRequest
+        self.__httpRequest = httpRequest # same object and session of "httpRequest" given by "main.py"
         self.__requestConfig = requestConfig
         self.__HTMLpraser = HTMLSearch()
 
@@ -16,7 +16,6 @@ class FetchChapterContent:
         while True: # repeats same url for timeout cases until successful
             response = self.__httpRequest.makeRequest(chapterURL)
             if isinstance(response, int):
-                self.__httpRequest.handleErrors(response, chapterURL)
                 if response == 404: # not expected error
                     exit()
             else: # request was successfull
@@ -60,6 +59,7 @@ class FetchChapterContent:
             print("<< Error: More than one title fetched >>")
         return str(chapterTitle)
     
+    # works allmost everytime if p tags are used(or other tags within a soup list len(nestedElements) > 1)
     def nestedChapterContent(self, nestedElements: BeautifulSoup) -> BeautifulSoup:
         flippedElements: list[BeautifulSoup] = []
         for i in range(len(nestedElements) - 1, -1, -1): # remove nesting

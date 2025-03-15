@@ -17,13 +17,16 @@ Here you should write down the base URL to your target server. After the applica
 {
     "request": {
         "header": "httpRequestHeader",
+        "coverHeader": "httpRequestHeader",
         "url": "urlToChapterlist",
-        "filter": "getBook{Id}.html"
+        "filter": "getBook{Id}.html",
+        "selfReferer": true,
+        "coverSelfReferer": true
     }
 }
 ```
 
-The `header` key sets which httpHeader within the `configurations/header.json` should be used. If not set or not found the application uses the `default` header.
+The `header` key sets which httpHeader within the `configurations/header.json` should be used. If not set or not found the application uses the `default` header. The `coverHeader` is a optional argument and is used to give a differend header as parameter for the requests to the cover. If not set, it will be the same header as `header`. `coverHeader` can be usefull if the cover is on a differend server side and other arguments like `Host` for example are needed.
 
 The `url` key is the url that is showing towards the external or internal server page where the chapter list is saved. The parameters for the current book will be added through the keys within `params`.
 
@@ -38,6 +41,17 @@ User input - `https://testHTML/niceBook.html`
 } 
 ```
 The `{}` within the value of `filter` is where the ids of the book are normally(at the current server). So the application tries to delete everything around the id with the help of the `filter`. And the fetched id should be `niceBook`.
+
+Request on - `https://testHTML/niceBook.html/chapter-1`
+```json
+{
+    "request": {
+        "selfReferer": true,
+        "coverSelfReferer": true
+    }
+} 
+```
+Here is a differend case. The website needs a `Reference` that is dynamic to it's requests. So no static argument in `header.json` can be of use here. If you put here `selfReferer` and set it to `true` the web scraper sets the url of the website that is to visit in the `header` dynamicly every request. Like here: `Referer`: `https://testHTML/niceBook.html/chapter-1`. The `coverSelfReferer` is the same like `selfReferer` but for the session that is used for cover requests only. 
 
 # 3. params
 The part `params` is the most important 'cause it defines basicly what kind of server you want to fetch. Additionally it sets the parameters of the url that is used to get the chapter lists and more.
@@ -201,15 +215,15 @@ Here the configuration without the common keys.
 {
     "chapterlist": {
         "prefix": "https://testHTML/",
-        "suffix": ".htm"
+        "suffix": ".html"
     }
 }
 ```
 
 And after adding the prefix before and the suffix anfter the URL fragments it looks like this:
 ```
-https://testHTML/niceBook/chapter-1.htm  
-https://testHTML/niceBook/chapter-2.htm  
-https://testHTML/niceBook/chapter-3.htm  
-https://testHTML/niceBook/chapter-4.htm  
+https://testHTML/niceBook/chapter-1.html  
+https://testHTML/niceBook/chapter-2.html  
+https://testHTML/niceBook/chapter-3.html  
+https://testHTML/niceBook/chapter-4.html  
 ```
