@@ -25,4 +25,11 @@ python main.py --title "Hollow Fantasy" --author "TheCreatorHimself" --cover "ht
 ...
 ```
 
-It's recommented for configuration purposes to use `--debug` for more informations about the current configuration status and it's responses to that. If you want to have a deeper view into the web scraper part you should use `--debughtml`. `--debughtml` shows the very process of the web scraper part related to your configuration.
+It's recommented for configuration purposes to use `--debug` for more informations about the current configuration status and it's responses to that. If you want to have a deeper view into the web scraper part you should use `--debughtml`. `--debughtml` shows the very process of the web scraper part related to your configuration. 
+
+There are some other arguments like `--moreHumanLike`, `--humanLike`, `--latency` and `--timeout`. They all are related to the run-time.
+
+`--timeout` is the only one of these that sets the timelimit of a connection. After the timelimit is reached the request runs into a timeout error and closes the connection and after some time reconnects with the server to try the connection again.
+
+# Cookies
+Everybody likes cookies! But websites love them a bit to much in my opinion. So I implemented a solution(even if not that clean and smooth). If a website gives the http error `403` as return, my program requests the user to put in a cookie in a text format. To get these cookies you should use your browser and get in the `inspect mode`.

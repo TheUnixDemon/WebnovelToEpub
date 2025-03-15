@@ -26,6 +26,17 @@
             },
             "required": ["server", "request"],
             "additionalProperties": true
+        },
+        "defaultHttpHeader": {
+            "type": "object",
+            "properties": {
+                "Accept": {"type": "string"},
+                "Accept-Encoding": {"type": "string"},
+                "Accept-Language": {"type": "string"},
+                "Connection": {"type": "string"},
+                "User-Agent": {"type": "string"}
+            },
+            "additionalProperties": true
         }
     }
 }

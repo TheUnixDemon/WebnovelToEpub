@@ -6,8 +6,11 @@
         "server": "ServerURL", // example: http://google.de/
         "request": {
             "header": "httpRequestHeader", // look at the `header.json`
+            "coverHeader": "httpRequestHeader",
             "url": "urlToChapterlist",
             "filter": "getBook{Id}.html", // should remove all around the id of the chosen book
+            "selfReferer": true,
+            "coverSelfReferer": true,
             "pattern": {
                 "chapterlist": {
                     "urlPattern": "/urlPart/",
