@@ -45,6 +45,7 @@ class HttpHandler:
                 timeout += self.getDuration(0, 5) # for more humanlike beahviour
             print(f"<< RequestError time limit *{self.__timeout}* reached - wait {timeout} secounds [{url}] >>")
             time.sleep(timeout)
+            return 408
         # http errors - non timeout errors(probably)
         except requests.exceptions.RequestException as e:
             status: int = e.response.status_code # http error code

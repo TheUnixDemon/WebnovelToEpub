@@ -75,7 +75,10 @@ class FetchChapterContent:
         nestedElements = self.__HTMLpraser.getSoup() # could be nested
         elements: BeautifulSoup = self.nestedChapterContent(nestedElements)
         chapterContent: list[str] = []
+        removePattern: str = self.__requestConfig.get("removePattern", None)
         for element in elements:
             if not element.find_all(["script", "div"]) and len(element) != 0: # checks if tag has some content and don't have more tags within
-                chapterContent.append(str(element)) # str -> with tags, .string -> without tags
+                # appends content if removePattern is None or not within content
+                if not removePattern or not removePattern in str(element):
+                    chapterContent.append(str(element)) # str -> with tags, .string -> without tags
         return chapterContent

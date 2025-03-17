@@ -84,7 +84,11 @@ if param.getCover():
     makeEPUB.addCover(cover)
     httpRequestCover.closeSession()
 
-calcTimeInSec: int = round((timeoutEach[0] + timeoutEach[1]) / 2.0) * len(selectedChapterURLs) + (len(selectedChapterURLs) * 2)
+calcTimeInSec: int = 0
+if not timeoutEach:
+    calcTimeInSec += (len(selectedChapterURLs) * 2)
+else:
+    calcTimeInSec += ((timeoutEach[0] + timeoutEach[1]) / 2.0) * len(selectedChapterURLs) + (len(selectedChapterURLs) * 0.5)
 formatted_time = time.strftime("%H:%M:%S", time.gmtime(calcTimeInSec))
 print(f"--- Necessary Time [{formatted_time}] ---")
 print("--- Creating ebook ---")

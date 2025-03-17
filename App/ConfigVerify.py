@@ -23,7 +23,6 @@ class ConfigVerify(LoadJson):
             print(f"<< 'config.json' fullfills not the requirements {e}>>")
             exit()
 
-
     # basicly checks if the only necssary "default" header is set
     def defaultHttpHeader(self) -> None:
         try:

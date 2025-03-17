@@ -43,7 +43,7 @@ class Argument:
         return self.__args.filename
     def getTimeout(self) -> int:
         return self.__args.timeout
-    def getLatency(self) -> bool:
+    def getLatency(self) -> int:
         return self.__args.latency
     def getHumanlike(self) -> bool:
         return self.__args.humanlike
@@ -78,6 +78,6 @@ class Argument:
             elif self.getHumanlike():
                 timeout[0] = 5; timeout[1] = 15
             elif self.getLatency():
-                timeout[0] = 2; timeout[1] = 2
+                timeout[0] = 1; timeout[1] = 1
         return timeout
 
