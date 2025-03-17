@@ -45,7 +45,11 @@ if param.getDebug():
     print(f"<< ServerType:{typeServer} -CONFIG- -DEBUGMODE- >>")
 
 # range of sec that will be waited until new request try
-timeoutEach: list[int] = param.returnTimeoutEach()
+timeoutEach: list[float] = param.returnTimeoutEach()
+showTime: str = f"*{timeoutEach[0]}*"
+if timeoutEach[0] != timeoutEach[1]:
+    showTime += f" to *{timeoutEach[1]}*"
+print(f"<< Timeout between each request in secounds [{showTime}] >>")
 # for websites that need everytime a referer to the page itself
 selfReferer: bool = requestConfig.get("selfReferer", False)
 # creates request instance
@@ -84,11 +88,8 @@ if param.getCover():
     makeEPUB.addCover(cover)
     httpRequestCover.closeSession()
 
-calcTimeInSec: int = 0
-if not timeoutEach:
-    calcTimeInSec += (len(selectedChapterURLs) * 2)
-else:
-    calcTimeInSec += ((timeoutEach[0] + timeoutEach[1]) / 2.0) * len(selectedChapterURLs) + (len(selectedChapterURLs) * 0.5)
+# calculates the time that *could* be the time in total
+calcTimeInSec: int = round((timeoutEach[0] + timeoutEach[1]) / 2.0 * len(selectedChapterURLs) + len(selectedChapterURLs) * 0.5)
 formatted_time = time.strftime("%H:%M:%S", time.gmtime(calcTimeInSec))
 print(f"--- Necessary Time [{formatted_time}] ---")
 print("--- Creating ebook ---")

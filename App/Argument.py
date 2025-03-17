@@ -18,7 +18,7 @@ class Argument:
         parser.add_argument("-c", "--cover", help = "cover for the ebook")
         parser.add_argument("-f", "--filename", help = "custom filename")
         parser.add_argument("-T", "--timeout", help = "sets request connection time limit *default 15sec*", type = int, default = 15)
-        parser.add_argument("-l", "--latency", action = "store_false", help = "waits 2sec(static) between requests *default*", default = True)
+        parser.add_argument("-l", "--latency", type = float, help = "adds latency to the requests in between", default = 0.0)
         parser.add_argument("-hl", "--humanlike", action = "store_false", help = "waits 5-10sec between requests *default*", default = True)
         parser.add_argument("-Hl", "--morehumanlike", action = "store_true", help = "waits 15-30sec between requests", default = False)
         parser.add_argument("-d", "--debug", action = "store_true", help = "enable debug output", default = False)
@@ -27,7 +27,6 @@ class Argument:
 
         # ensures correct values
         self.__args.filename = (self.__args.filename if self.__args.filename else self.__args.title) + ".epub"
-        self.__args.latency = (False if self.__args.morehumanlike or self.__args.humanlike else self.__args.latency)
         self.__args.humanlike = (False if self.__args.morehumanlike else self.__args.humanlike)
         self.__args.debug = (False if self.__args.debughtml else self.__args.debug)
 
@@ -43,8 +42,9 @@ class Argument:
         return self.__args.filename
     def getTimeout(self) -> int:
         return self.__args.timeout
-    def getLatency(self) -> int:
-        return self.__args.latency
+    def getLatency(self) -> float:
+        # if the passed float was negative
+        return abs(self.__args.latency)
     def getHumanlike(self) -> bool:
         return self.__args.humanlike
     def getMorehumanlike(self) -> bool:
@@ -69,15 +69,12 @@ class Argument:
 
     # returns time to wait if connection time limit is reached
     # source of the values are humanlike, morehumanlike and latency
-    def returnTimeoutEach(self) -> list[int]:
-        timeout: list[int] = None
-        if self.getMorehumanlike() or self.getHumanlike() or self.getLatency():
-            timeout = [0, 0]
-            if self.getMorehumanlike():
-                timeout[0] = 15; timeout[1] = 30
-            elif self.getHumanlike():
-                timeout[0] = 5; timeout[1] = 15
-            elif self.getLatency():
-                timeout[0] = 1; timeout[1] = 1
-        return timeout
+    def returnTimeoutEach(self) -> list[float]:
+        timeoutEach: list[float] = [0.0, 0.0]
+        if self.getMorehumanlike():
+            timeoutEach[0] = 15.0; timeoutEach[1] = 30.0
+        elif self.getHumanlike():
+            timeoutEach[0] = 5.0; timeoutEach[1] = 15.0
+        timeoutEach[0] += self.getLatency(); timeoutEach[1] += self.getLatency()
+        return timeoutEach
 

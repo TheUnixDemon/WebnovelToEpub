@@ -4,15 +4,13 @@ import time
 
 # makes the requests, handles the header(encode into utf-8) and 
 class HttpHandler:
-    def __init__(self, httpHeader: dict[str], timeout: int, timeoutEach: list[int], selfReferer: bool):
+    def __init__(self, httpHeader: dict[str], timeout: int, timeoutEach: list[float], selfReferer: bool):
         self.__session: requests = requests.session()
         self.__httpHeader: dict[str] = {}
         self.setHttpHeader(httpHeader)
         self.__timeout = timeout
         # implemented for encoding 'cause 
-        self.__timeoutEach: list[int] = None
-        if timeoutEach: # not None 
-            self.__timeoutEach: list[int] = [timeoutEach[0], timeoutEach[1]]
+        self.__timeoutEach: list[float] = timeoutEach
         self.__selfReferer: bool = selfReferer
 
     def setHttpHeader(self, httpHeader: dict[str]) -> None:
@@ -23,13 +21,8 @@ class HttpHandler:
     # makes the request with the given header, timeout beaviour, session and so on
     def makeRequest(self, url: str) -> requests:
         # timeout for each request for more humanlike behavore; lesser probability to run to a http timeout
-        if self.__timeoutEach:
-            duration: int
-            if self.__timeoutEach[0] != self.__timeoutEach[1]:
-                duration = self.getDuration(self.__timeoutEach[0], self.__timeoutEach[1])
-            else: # static duration a = b
-                duration = self.__timeoutEach[0]
-            time.sleep(duration)
+        duration: float = self.getDuration(self.__timeoutEach[0], self.__timeoutEach[1])
+        time.sleep(duration)
         # if selfReferer in config.json is true
         if self.__selfReferer:
             self.__httpHeader["Referer"] = url.encode("utf-8")
@@ -39,12 +32,13 @@ class HttpHandler:
             return page
         # time limit for request reached; timeout or server error suspected
         except requests.exceptions.Timeout:
-            timeout: int = 30
-            # not None and not static; a != b
-            if self.__timeoutEach and self.__timeout[0] != self.__timeout[1]: 
-                timeout += self.getDuration(0, 5) # for more humanlike beahviour
+            timeout: float = 30.0
+            # checks if humanlike beahvior is wished and adds to he 30 secounds a random number between 0-5
+            if self.__timeout[0] != self.__timeout[1]: 
+                timeout += self.getDuration(0.0, 5.0) # for more humanlike beahviour
             print(f"<< RequestError time limit *{self.__timeout}* reached - wait {timeout} secounds [{url}] >>")
             time.sleep(timeout)
+            # returns error status to handle outside this class
             return 408
         # http errors - non timeout errors(probably)
         except requests.exceptions.RequestException as e:
@@ -55,6 +49,7 @@ class HttpHandler:
                     print(f"<< RequestError -403- access forbidden [{url}] >>")
                     # adds a new cookie if error 403; if its successful fetching can be processeded
                     while True:
+                        # uses strip() to remove not wished spaces that was passed by
                         cookie: str = input("New Cookie needed?(only value):").strip()
                         if cookie:
                             self.__httpHeader["Cookie"] = cookie.encode("utf-8")
@@ -67,8 +62,8 @@ class HttpHandler:
             return status
         
     # method is mostly detiminated by arguments like humanlike, morehumanlike and latency
-    def getDuration(self, a: int, b: int) -> int:
-        return random.randint(a, b) # if a=0, b=5 -> 0-5 (both included)
+    def getDuration(self, rangeS: float, rangeE: float) -> float:
+        return round(random.uniform(rangeS, rangeE), 1) # if a=0, b=5 -> 0-5 (both included)
     
     # after all data are collected
     def closeSession(self):
